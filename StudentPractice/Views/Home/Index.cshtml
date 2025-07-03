@@ -1,8 +1,49 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
+@model List<Student>
+<div>
+    <div>
+    <h1>Student Table</h1>
+<table style="border: 1px solid black; border-collapse: collapse;">
+    <thead>
+        <tr>
+            <th style="border: 1px solid black;">Name</th>
+            <th style="border: 1px solid black;">Rollno</th>
+            <th style="border: 1px solid black;">Marks</th>
+            <th style="border: 1px solid black">Delete/Edit</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var st in Model) {
+                <tr>
+                    <td style="border: 1px solid black;">@st.Name</td>
+            <td style="border: 1px solid black;">@st.Rollno</td>
+            <td style="border: 1px solid black;color:@(st.Marks>90 ?"red":"black")">@st.Marks</td>
+            <td style="border: 1px solid black;">
+                @* action for DELETE *@
+                <form asp-controller="Home" asp-action="Delete" method="post">
+                    <input type="hidden" name="Id" value="@st.Rollno" />
+                    <button type="submit">Delete</button>
+                </form>
+                @* Action for edit *@
+               <button><a asp-route-Id="@st.Rollno" asp-action="EditStudent">Edit</a></button>
+            </td>
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+        </tr>}
+    </tbody>
+        </table>
+    </div>
+    <div>
+        <form asp-contorller="Home" asp-action="Index" method="post">
+            Enter Name :
+            <input type="text" name="name" placeholder="Enter Name"/><br />
+            Enter Rollno :<a href="#"></a>
+            <input type="number" name="rollno" placeholder="Enter RollNo"/><br />
+            Enter Marks : 
+            <input type="number" name="marks" placeholder="Marks" /><br />
+            <button type="submit">Submit</button>
+            </form>
+    </div>
 </div>
+
