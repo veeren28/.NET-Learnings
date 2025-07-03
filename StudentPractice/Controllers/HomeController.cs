@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
+using System.Numerics;
 using Microsoft.AspNetCore.Mvc;
 using StudentPractice.Models;
 
@@ -15,7 +16,14 @@ namespace StudentPractice.Controllers
             new Student{Name = "Sandeep",Rollno=002,Marks =100},
             new Student{Name = "Hanu",Rollno=001,Marks=90},
         };
-
+      public  static HashSet<int> RollnoSet = new HashSet<int>();
+        static HomeController()
+        {
+            foreach(Student student in std)
+            {
+                RollnoSet.Add(student.Rollno);
+            }
+        }
         private readonly ILogger<HomeController> _logger;
 
         public HomeController(ILogger<HomeController> logger)
@@ -26,14 +34,24 @@ namespace StudentPractice.Controllers
         
         public IActionResult Index()
 
-        {     
-
+        {
+            ViewBag.Message = null;
+            
 
             return View(std);
         }
         [HttpPost]
-        public IActionResult Index(string name , int rollno,int marks) { 
-            std.Add(new Student{Name = name, Rollno=rollno, Marks=marks});
+        public IActionResult Index(string name , int rollno,int marks) {
+            
+            if (RollnoSet.Contains(rollno))
+            {
+                ViewBag.Message = "Roll Number Already  Exists,Student cannot be Added";
+            }
+            else
+            {
+                std.Add(new Student { Name = name, Rollno = rollno, Marks = marks });
+                RollnoSet.Add(rollno);
+            }
             return View(std);
 
         }
@@ -41,15 +59,18 @@ namespace StudentPractice.Controllers
         [HttpPost]
         public IActionResult Delete(int Id)
         { int index = 1;
-            foreach(Student student in std)
+            
+            for(int i = 0;i< std.Count; i++)
             {
-                if (student.Rollno == Id) {
-                    std.RemoveAt(
-                    index);
+                if (std[i].Rollno == Id)
+                {
+                    std.RemoveAt(i);
+                    RollnoSet.Remove(Id);
+                    break;
                 }
-                index++;
             }
-            return View(std);
+            
+            return RedirectToAction("Index");
         }
         [HttpGet]
         public IActionResult EditStudent(int Id)
@@ -72,7 +93,7 @@ namespace StudentPractice.Controllers
                 }
                 
             }
-            return View(std);
+            return RedirectToAction("Index");
         }
         public IActionResult Privacy()
         {
