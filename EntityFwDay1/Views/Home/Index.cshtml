@@ -1,0 +1,11 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+@model List<EntityFwDay1.Models.Student>
+<div class="text-center">
+    @foreach(Student std in Model)
+    {
+        <h1>@std.Name</h1>
+        <h1>@std.Id</h1>
+    }
+</div>
