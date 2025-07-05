@@ -19,7 +19,7 @@ namespace EntityFwDay1.Controllers
 
         public IActionResult Index()
         {
-            _context.students.Add(new Student() { Name = "Veeren", Id = 005 });
+            _context.students.Add(new Student() { Name = "Veeren" });
             _context.SaveChanges();
             var st = _context.students.ToList();
             return View(st);

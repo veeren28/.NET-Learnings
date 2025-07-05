@@ -1,10 +1,12 @@
 ﻿using Microsoft.Identity.Client;
+using System.ComponentModel.DataAnnotations;
 
 namespace EntityFwDay1.Models
 {
     public class Student
     {
-        public int Id { get; set; }
+        [Key]
+        public int Rollno { get; set; }
         public string Name { get; set; }
     }
 }

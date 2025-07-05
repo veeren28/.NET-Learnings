@@ -163,10 +163,10 @@ E:\.NET\EntityFWDay1\obj\Debug\net8.0\staticwebassets.build.json
 E:\.NET\EntityFWDay1\obj\Debug\net8.0\staticwebassets.build.json.cache
 E:\.NET\EntityFWDay1\obj\Debug\net8.0\staticwebassets.development.json
 E:\.NET\EntityFWDay1\obj\Debug\net8.0\staticwebassets.build.endpoints.json
-E:\.NET\EntityFWDay1\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
 E:\.NET\EntityFWDay1\obj\Debug\net8.0\EntityFw.81BD994A.Up2Date
 E:\.NET\EntityFWDay1\obj\Debug\net8.0\EntityFwDay1.dll
 E:\.NET\EntityFWDay1\obj\Debug\net8.0\refint\EntityFwDay1.dll
 E:\.NET\EntityFWDay1\obj\Debug\net8.0\EntityFwDay1.pdb
 E:\.NET\EntityFWDay1\obj\Debug\net8.0\EntityFwDay1.genruntimeconfig.cache
 E:\.NET\EntityFWDay1\obj\Debug\net8.0\ref\EntityFwDay1.dll
+E:\.NET\EntityFWDay1\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
