@@ -1,0 +1,16 @@
+﻿namespace EntityFrameWorkPract.Views.Home
+@model Student
+<div>
+    
+        <form asp-controller="Home" asp-action="UpdateStd" method="post">
+            <h1 style="color:blue"> Change Details for @Model.Name</h1>
+            <input type="hidden" name="Id" value="@Model.Id" />
+            <h1>Edit name </h1>
+            <input type="text" name="Ename"  placeholder="@Model.Name"/>
+            <h1>Edit Marks</h1>
+            <input type="number" name="Emarks" placeholder="@Model.Marks"/>
+            <button type="submit">submit
+
+            </button>
+    </form>
+</div>

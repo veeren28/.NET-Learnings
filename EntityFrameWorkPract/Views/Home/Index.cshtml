@@ -1,0 +1,33 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+@model List<EntityFrameWorkPract.Models.Student>
+
+<div class="text-center">
+    @if (ViewBag != null)
+    {
+        <h1 style="color:red">@ViewBag.Msg</h1>
+    }
+    @foreach(var std in Model)
+    {
+        <h1>
+            @std.Name and his @std.Marks
+        </h1>
+        
+        <form asp-controller="Home" asp-action="Delete" method="post">
+            <input type="hidden" name="Id" value="@std.Id" />
+            <button type="submit">Delete</button>
+        </form>
+        <a asp-controller="Home" asp-action="UpdateStd" asp-route-Id="@std.Id">Edit</a>
+        @* <form asp-controller="Home" asp-action="Update" asp-route-Id="@std.Id" method="post">
+             <button type="submit">Edit</button> 
+        </form> *@
+    }
+    <form asp-controller="Home" asp-action="Index" method="post" >
+       <h1>Enter Name</h1>
+       <input type = "text" name="_Name"/>
+       <h1>Enter Marks</h1>
+       <input type="number" name="_Marks"/>
+       <button type="submit">submit</button>
+    </form>
+</div>
