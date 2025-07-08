@@ -169,4 +169,5 @@ E:\.NET\EntityFrameWorkPract\obj\Debug\net8.0\refint\EntityFrameWorkPract.dll
 E:\.NET\EntityFrameWorkPract\obj\Debug\net8.0\EntityFrameWorkPract.pdb
 E:\.NET\EntityFrameWorkPract\obj\Debug\net8.0\EntityFrameWorkPract.genruntimeconfig.cache
 E:\.NET\EntityFrameWorkPract\obj\Debug\net8.0\ref\EntityFrameWorkPract.dll
+E:\.NET\EntityFrameWorkPract\bin\Debug\net8.0\Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
 E:\.NET\EntityFrameWorkPract\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt

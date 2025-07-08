@@ -1,0 +1,20 @@
+﻿@model EntityFrameWorkPract.Models.LoginModel
+
+<div>
+    <form asp-controller="Account" asp-action="Login" method="post">
+        <label>Enter Name:</label>
+        <input asp-for="Username" />
+        <span asp-validation-for="Username" class="text-danger"></span>
+
+        <label>Enter Password:</label>
+        <input type="password" asp-for="Password" />
+        <span asp-validation-for="Password" class="text-danger"></span>
+
+        <button type="submit">Submit</button>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+<h1>New User? <a asp-action="Register" asp-controller="Registration">Create new Account</a></h1>
