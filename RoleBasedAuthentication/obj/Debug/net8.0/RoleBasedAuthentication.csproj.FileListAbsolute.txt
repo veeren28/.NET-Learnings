@@ -1,0 +1,10 @@
+E:\.NET\RoleBasedAuthentication\obj\Debug\net8.0\RoleBasedAuthentication.csproj.AssemblyReference.cache
+E:\.NET\RoleBasedAuthentication\obj\Debug\net8.0\rpswa.dswa.cache.json
+E:\.NET\RoleBasedAuthentication\obj\Debug\net8.0\RoleBasedAuthentication.GeneratedMSBuildEditorConfig.editorconfig
+E:\.NET\RoleBasedAuthentication\obj\Debug\net8.0\RoleBasedAuthentication.AssemblyInfoInputs.cache
+E:\.NET\RoleBasedAuthentication\obj\Debug\net8.0\RoleBasedAuthentication.AssemblyInfo.cs
+E:\.NET\RoleBasedAuthentication\obj\Debug\net8.0\RoleBasedAuthentication.csproj.CoreCompileInputs.cache
+E:\.NET\RoleBasedAuthentication\obj\Debug\net8.0\RoleBasedAuthentication.MvcApplicationPartsAssemblyInfo.cache
+E:\.NET\RoleBasedAuthentication\obj\Debug\net8.0\RoleBasedAuthentication.RazorAssemblyInfo.cache
+E:\.NET\RoleBasedAuthentication\obj\Debug\net8.0\RoleBasedAuthentication.RazorAssemblyInfo.cs
+E:\.NET\RoleBasedAuthentication\obj\Debug\net8.0\RoleBasedAuthentication.sourcelink.json

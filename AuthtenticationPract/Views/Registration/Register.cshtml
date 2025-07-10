@@ -1,0 +1,15 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model AuthtenticationPract.Models.RegistrationModel
+<div>
+    <form asp-controller = "Registration" asp-action="Register" method="post">
+      <label>Enter Name :</label>
+      <input type="text" name="Name" asp-for="Name" />
+      <label>Enter password</label>
+      <input type="password" name="Password" asp-for="Password" />
+      <button type="submit">Submit</button>
+    </form>
+</div>
