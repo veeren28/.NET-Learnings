@@ -4,3 +4,18 @@ GET {{BooksCollectionsApp_HostAddress}}/weatherforecast/
 Accept: application/json
 
 ###
+GET {{BooksCollectionsApp_HostAddress}}/BookController.cs/GetBooks
+Accept: application/json
+###
+POST {{BooksCollectionsApp_HostAddress}}/Book/books
+Content-Type: application/json
+
+{
+  "title": "Some short title",
+  "author": "Short Name",
+  "categoryId": 1
+}
+
+###
+GET {{BooksCollectionsApp_HostAddress}}/Book
+Accept : application/json

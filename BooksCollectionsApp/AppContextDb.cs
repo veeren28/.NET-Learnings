@@ -22,8 +22,8 @@ namespace BooksCollectionsApp
 
             // Seed Books with valid CategoryId
             modelBuilder.Entity<BookModel>().HasData(
-                new BookModel { Id = 1, Author = "Mark Manson", CategoryId = 1 },
-                new BookModel { Id = 2, Author = "Atomic", CategoryId = 1 }
+                new BookModel { Id = 1, Author = "Mark Manson",Title="Subtle art Of not giving a Fuck", CategoryId = 1 },
+                new BookModel { Id = 2, Author = "Atomic",Title="Atomic Habits", CategoryId = 1 }
             );
         }
     }
