@@ -1,0 +1,34 @@
+[
+  {
+    "ContainingType": "JWT_Practice.Controllers.HomeController",
+    "Method": "Login",
+    "RelativePath": "api/Home/Login",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "login",
+        "Type": "JWT_Practice.DTOs.UserLoginDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "JWT_Practice.Controllers.HomeController",
+    "Method": "Register",
+    "RelativePath": "api/Home/Register",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "register",
+        "Type": "JWT_Practice.DTOs.RegisterDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  }
+]
