@@ -17,9 +17,10 @@ public decimal Amount { get; set; }
      public string Category { get; set; }
         [StringLength(300)]
         public string? Description { get; set; }
-        [Required]
-        [DataType(DataType.Date)]
-        public DateTime Date { get; set; } // ✅ Recommended addition
+        //[Required]
+        //[DataType(DataType.Date)]
+        //public DateTime Date { get; set; } // ✅ Recommended addition
+
 
     }
 }

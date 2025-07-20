@@ -5076,6 +5076,7 @@
       "Microsoft.EntityFrameworkCore >= 9.0.7",
       "Microsoft.EntityFrameworkCore.Design >= 9.0.7",
       "Microsoft.EntityFrameworkCore.SqlServer >= 9.0.7",
+      "Microsoft.Extensions.Identity.Core >= 9.0.7",
       "Swashbuckle.AspNetCore >= 9.0.3"
     ]
   },
@@ -5156,6 +5157,10 @@
             "version": "[9.0.7, )"
           },
           "Microsoft.EntityFrameworkCore.SqlServer": {
+            "target": "Package",
+            "version": "[9.0.7, )"
+          },
+          "Microsoft.Extensions.Identity.Core": {
             "target": "Package",
             "version": "[9.0.7, )"
           },

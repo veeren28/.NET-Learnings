@@ -28,7 +28,7 @@ namespace ExpensesTracker.Controllers
 
                 Title = itemDTO.Title,
                 Description = itemDTO.Description,
-                Date = itemDTO.Date,
+                Date = DateTime.Now,
                 Amount = itemDTO.Amount,
                 Category = itemDTO.Category,
 
@@ -40,30 +40,36 @@ namespace ExpensesTracker.Controllers
         [HttpPut("EditItem")]
         public async Task<IActionResult> UpdateItem(UpdateItemDTO itemDTO)
         {
-            var UpdateItem = await _context.Expenses.FindAsync(itemDTO.Id);
-            if (UpdateItem ==null) { return BadRequest("Id not found"); }
-            
-                UpdateItem.Title = itemDTO.Title;
-                UpdateItem.Description = itemDTO.Description;
-                UpdateItem.Date = itemDTO.Date;
-                UpdateItem.Amount = itemDTO.Amount;
+            var UpdateItem = await _context.Expenses.FindAsync(itemDTO.Title);
+            if (UpdateItem == null) { return BadRequest("Id not found"); }
 
-           
+            UpdateItem.Title = itemDTO.Title;
+            UpdateItem.Description = itemDTO.Description;
+            UpdateItem.Date = itemDTO.Date;
+            UpdateItem.Amount = itemDTO.Amount;
+
+
             await _context.SaveChangesAsync();
-            return Ok(UpdateItem +" sucessfully Updated");
+            return Ok(UpdateItem + " sucessfully Updated");
 
         }
         [HttpDelete("Delete")]
         public async Task<IActionResult> DeleteItem(int Id)
-       
         {
             var delete = await _context.Expenses.FindAsync(Id);
-            if (delete == null) { return BadRequest("Not found"); }
-             _context.Expenses.Remove(delete);
-            _context.SaveChanges(); 
-            return Ok(delete);
 
+            if (delete == null)
+            {
+                return BadRequest("Item not found");
+            }
+
+            _context.Expenses.Remove(delete);
+            await _context.SaveChangesAsync();
+
+            return Ok($"Item with ID {Id} deleted successfully.");
+            // Returns deleted object
         }
-    }
 
+
+    }
 }
