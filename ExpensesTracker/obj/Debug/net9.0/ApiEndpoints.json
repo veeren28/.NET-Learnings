@@ -1,5 +1,21 @@
 [
   {
+    "ContainingType": "ExpensesTracker.Controllers.AuthController",
+    "Method": "Login",
+    "RelativePath": "api/Auth/login",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "loginDTO",
+        "Type": "ExpensesTracker.DTOs.LoginDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "ExpensesTracker.Controllers.HomeController",
     "Method": "Get",
     "RelativePath": "api/Home",

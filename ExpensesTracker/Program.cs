@@ -17,7 +17,7 @@ builder.Services.AddDbContext<AppContextDb>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 // adding Identity 
 builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<AppContextDb>();
-var app = builder.Build();
+
 
 
 // adding JWT Authentication
@@ -36,6 +36,7 @@ builder.Services.AddAuthentication(options => {
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
     };
 });
+var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -50,3 +51,4 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
