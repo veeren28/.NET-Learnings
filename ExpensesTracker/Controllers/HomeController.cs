@@ -1,28 +1,46 @@
 ﻿using ExpensesTracker.Data;
 using ExpensesTracker.DTOs;
 using ExpensesTracker.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace ExpensesTracker.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class HomeController : ControllerBase
     {
         private readonly AppContextDb _context;
+        private readonly UserManager<IdentityUser> userManager;
+      
         public HomeController(AppContextDb context)
         {
             _context = context;
         }
         [HttpGet]
-        public IActionResult Get()
+        public async Task<IActionResult> Get()
         {
-            return Ok(_context.Expenses.ToList());
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier);
+            if (userId != null)
+            {
+                var list  =  await _context.Expenses.Where(e=> e.UserId.Equals(userId)).ToListAsync();
+                return Ok(list);
+            }
+            return Unauthorized();
         }
+        
         [HttpPost("AddItem")]
         public async Task<IActionResult> AddExpense(AddItemDTO itemDTO)
         {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            // user is a predefined term 
+
             var item = new ExpensesModel
             {
 
@@ -31,6 +49,7 @@ namespace ExpensesTracker.Controllers
                 Date = DateTime.Now,
                 Amount = itemDTO.Amount,
                 Category = itemDTO.Category,
+                UserId = userId
 
             };
             await _context.Expenses.AddAsync(item);
@@ -40,13 +59,16 @@ namespace ExpensesTracker.Controllers
         [HttpPut("EditItem")]
         public async Task<IActionResult> UpdateItem(UpdateItemDTO itemDTO)
         {
-            var UpdateItem = await _context.Expenses.FindAsync(itemDTO.Title);
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            var UpdateItem = await _context.Expenses.FindAsync(itemDTO.Id);
             if (UpdateItem == null) { return BadRequest("Id not found"); }
 
             UpdateItem.Title = itemDTO.Title;
             UpdateItem.Description = itemDTO.Description;
             UpdateItem.Date = itemDTO.Date;
             UpdateItem.Amount = itemDTO.Amount;
+            UpdateItem.UserId = userId;
 
 
             await _context.SaveChangesAsync();

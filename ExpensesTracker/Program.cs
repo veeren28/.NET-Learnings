@@ -1,4 +1,5 @@
 using ExpensesTracker.Data;
+using ExpensesTracker.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -36,6 +37,8 @@ builder.Services.AddAuthentication(options => {
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
     };
 });
+builder.Services.AddScoped<GenerateJWTtoken>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

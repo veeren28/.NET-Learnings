@@ -1,5 +1,6 @@
 ﻿using ExpensesTracker.DTOs;
 using ExpensesTracker.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -23,7 +24,7 @@ namespace ExpensesTracker.Controllers
         }
 
         // 👇 Handles POST requests to: /api/auth/login
-        [HttpPost("login")]
+        [HttpPost("Login")]
         public async Task<IActionResult> Login(LoginDTO loginDTO)
         {
             // 🔍 Check if the user with the provided email exists
@@ -46,12 +47,44 @@ namespace ExpensesTracker.Controllers
                     // - Easier to extend in future (e.g., return email, role, etc.)
                     return Ok(new { token });
                 }
+                else
+                {
 
-                return BadRequest("Invalid password");
+                    return BadRequest("Invalid password");
+                }
             }
+            else
+            {
 
-            // ❌ If user doesn't exist, return a clear error message
-            return BadRequest("User not found");
+                // ❌ If user doesn't exist, return a clear error message
+                return BadRequest("User not found");
+            }
+            }
+            [AllowAnonymous]
+        [HttpPost("Register")]
+        public async Task<IActionResult> Register(RegisterDTO register)
+        {
+            if (!ModelState.IsValid) {
+                return BadRequest("User already exsists");
+            }
+            var user = new IdentityUser
+            {
+                Email = register.Email,
+                UserName = register.Username,
+
+            };
+            var exist =await  _userManager.FindByEmailAsync(user.Email);
+            if (exist !=null) { return BadRequest("User Exsist"); }
+            else
+            {
+                if (user == null) return BadRequest("Invalid User");
+                var result = await _userManager.CreateAsync(user, register.Password);
+                if (result.Succeeded) { return Ok(register.Username + "User Created Successfully"); }
+                else { return BadRequest(result.Errors); }
+
+
+            }
         }
+        
     }
 }

@@ -4,7 +4,7 @@ namespace ExpensesTracker.DTOs
 {
     public class UpdateItemDTO
     {
-        //public int Id { get; set; } // Used for lookup, not editable
+        public int Id { get; set; } // Used for lookup, not editable
 
         [Required]
         [StringLength(100)]
