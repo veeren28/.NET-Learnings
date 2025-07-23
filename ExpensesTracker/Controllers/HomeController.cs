@@ -30,8 +30,8 @@ namespace ExpensesTracker.Controllers
             var userId = User.FindFirst(ClaimTypes.NameIdentifier);
             if (userId != null)
             {
-                //var list  =  await _context.Expenses.Where(e=> e.UserId.Equals(userId)).ToListAsync();
-                return Ok("list");
+                var list  =  await _context.Expenses.Where(e=> e.UserId.Equals(userId)).ToListAsync();
+                return Ok(list);
             }
            
                 return Unauthorized();
