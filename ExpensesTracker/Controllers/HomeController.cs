@@ -19,18 +19,21 @@ namespace ExpensesTracker.Controllers
     {
         private readonly AppContextDb _context;
         private readonly UserManager<IdentityUser> userManager;
+        private readonly ILogger<HomeController> _logger;
       
-        public HomeController(AppContextDb context)
+        public HomeController(AppContextDb context, ILogger<HomeController> logger)
         {
             _context = context;
+          _logger = logger;
         }
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            var userId = User.FindFirst(ClaimTypes.NameIdentifier);
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            _logger.LogInformation("UserId: {UserId}", userId);
             if (userId != null)
             {
-                var list  =  await _context.Expenses.Where(e=> e.UserId.Equals(userId)).ToListAsync();
+                var list  =  await _context.Expenses.Where(e=> e.UserId==userId).ToListAsync();
                 return Ok(list);
             }
            
@@ -58,26 +61,31 @@ namespace ExpensesTracker.Controllers
             await _context.SaveChangesAsync();
             return Ok(_context.Expenses.ToList());
         }
-        [HttpPut("EditItem")]
-        public async Task<IActionResult> UpdateItem(UpdateItemDTO itemDTO)
+        [HttpPut("EditItem/{id}")]
+        public async Task<IActionResult> UpdateItem(int id,UpdateItemDTO itemDTO)
         {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            //var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);contains Details of user 
+            // it is not reuired since we are already authorized.
 
-            var UpdateItem = await _context.Expenses.FindAsync(itemDTO.Id);
+
+            var UpdateItem =await  _context.Expenses.FindAsync(id);
             if (UpdateItem == null) { return BadRequest("Id not found"); }
 
             UpdateItem.Title = itemDTO.Title;
             UpdateItem.Description = itemDTO.Description;
-            UpdateItem.Date = itemDTO.Date;
+            UpdateItem.Date = DateTime.Now;
+           UpdateItem.UpdatedAt = DateTime.Now;
+
+         
             UpdateItem.Amount = itemDTO.Amount;
-            UpdateItem.UserId = userId;
+        
 
 
             await _context.SaveChangesAsync();
-            return Ok(UpdateItem + " sucessfully Updated");
+            return Ok(UpdateItem);
 
         }
-        [HttpDelete("Delete")]
+        [HttpDelete("Delete/{Id}")]
         public async Task<IActionResult> DeleteItem(int Id)
         {
             var delete = await _context.Expenses.FindAsync(Id);
@@ -90,7 +98,7 @@ namespace ExpensesTracker.Controllers
             _context.Expenses.Remove(delete);
             await _context.SaveChangesAsync();
 
-            return Ok($"Item with ID {Id} deleted successfully.");
+            return Ok($"Item with ID {Id} {delete.Title} deleted successfully.");
             // Returns deleted object
         }
 

@@ -4,6 +4,7 @@ namespace ExpensesTracker.DTOs
 {
     public class UpdateItemDTO
     {
+       
         public int Id { get; set; } // Used for lookup, not editable
 
         [Required]
@@ -15,9 +16,9 @@ namespace ExpensesTracker.DTOs
         public decimal Amount { get; set; }
 
         [StringLength(300)]
-        public string? Description { get; set; }
+        public string? Description { get; set; } = "";
 
-        [Required]
+        
         public DateTime Date { get; set; } // Expense date
 
         // Optional: Add UpdatedAt if you want to track it from frontend

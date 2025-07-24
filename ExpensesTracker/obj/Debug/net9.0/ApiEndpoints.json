@@ -60,7 +60,7 @@
   {
     "ContainingType": "ExpensesTracker.Controllers.HomeController",
     "Method": "DeleteItem",
-    "RelativePath": "api/Home/Delete",
+    "RelativePath": "api/Home/Delete/{Id}",
     "HttpMethod": "DELETE",
     "IsController": true,
     "Order": 0,
@@ -68,7 +68,7 @@
       {
         "Name": "Id",
         "Type": "System.Int32",
-        "IsRequired": false
+        "IsRequired": true
       }
     ],
     "ReturnTypes": []
@@ -76,11 +76,16 @@
   {
     "ContainingType": "ExpensesTracker.Controllers.HomeController",
     "Method": "UpdateItem",
-    "RelativePath": "api/Home/EditItem",
+    "RelativePath": "api/Home/EditItem/{id}",
     "HttpMethod": "PUT",
     "IsController": true,
     "Order": 0,
     "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
       {
         "Name": "itemDTO",
         "Type": "ExpensesTracker.DTOs.UpdateItemDTO",
