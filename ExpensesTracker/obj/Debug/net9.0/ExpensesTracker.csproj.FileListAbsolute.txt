@@ -165,7 +165,6 @@ E:\.NET\ExpensesTracker\obj\Debug\net9.0\staticwebassets.build.json
 E:\.NET\ExpensesTracker\obj\Debug\net9.0\staticwebassets.build.json.cache
 E:\.NET\ExpensesTracker\obj\Debug\net9.0\staticwebassets.development.json
 E:\.NET\ExpensesTracker\obj\Debug\net9.0\staticwebassets.build.endpoints.json
-E:\.NET\ExpensesTracker\obj\Debug\net9.0\staticwebassets.upToDateCheck.txt
 E:\.NET\ExpensesTracker\obj\Debug\net9.0\Expenses.C53A5E05.Up2Date
 E:\.NET\ExpensesTracker\obj\Debug\net9.0\ExpensesTracker.dll
 E:\.NET\ExpensesTracker\obj\Debug\net9.0\refint\ExpensesTracker.dll

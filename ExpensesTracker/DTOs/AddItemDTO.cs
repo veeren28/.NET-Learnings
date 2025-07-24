@@ -14,7 +14,7 @@ namespace ExpensesTracker.DTOs
 public decimal Amount { get; set; }
         [Required]
         [StringLength(50)]
-     public string Category { get; set; }
+     public string CategoryName { get; set; }
         [StringLength(300)]
         public string? Description { get; set; }
         //[Required]

@@ -50,8 +50,9 @@ namespace ExpensesTracker.Controllers
             user.Balance -= itemDTO.Amount;
 
             // user is a predefined term 
-           
-
+            
+            var category = await _context.Category.FirstOrDefaultAsync(e => e.CategoryName==itemDTO.CategoryName);
+            if (category == null) { return NotFound("Category Not Found"); }
             var item = new ExpensesModel
             {
 
@@ -59,10 +60,10 @@ namespace ExpensesTracker.Controllers
                 Description = itemDTO.Description,
                 Date = DateTime.Now,
                 Amount = itemDTO.Amount,
-                Category = itemDTO.Category,
+                CategoryId = category.Id,
                 UserId = userId,
                 BalanceAfter = user.Balance
-                
+
             };
             await _context.Expenses.AddAsync(item);
             await _context.SaveChangesAsync();

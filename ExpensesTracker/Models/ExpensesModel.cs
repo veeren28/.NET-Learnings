@@ -27,9 +27,7 @@ namespace ExpensesTracker.Models
 
         [Required]
         [StringLength(100)]
-        public string Category { get; set; }
-
-        [Required]
+       
         [DataType(DataType.Date)]
         public DateTime Date { get; set; }
 
@@ -45,5 +43,13 @@ namespace ExpensesTracker.Models
         public DateTime CreatedAt { get; set; }
 
         public DateTime? UpdatedAt { get; set; }
+
+
+        // category
+        [Required  ]
+        public int CategoryId { get; set; }
+        [ForeignKey("CategoryId")]
+        public CategoryModel Category { get; set; }
+        // Navigation
     }
 }
