@@ -1,4 +1,5 @@
 using ExpensesTracker.Data;
+using ExpensesTracker.Models;
 using ExpensesTracker.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -17,7 +18,7 @@ builder.Services.AddOpenApi();
 builder.Services.AddDbContext<AppContextDb>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 // adding Identity 
-builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<AppContextDb>();
+builder.Services.AddIdentity<UserApplication, IdentityRole>().AddEntityFrameworkStores<AppContextDb>();
 
 
 

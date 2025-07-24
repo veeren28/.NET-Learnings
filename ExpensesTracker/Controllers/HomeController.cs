@@ -18,7 +18,7 @@ namespace ExpensesTracker.Controllers
     public class HomeController : ControllerBase
     {
         private readonly AppContextDb _context;
-        private readonly UserManager<IdentityUser> userManager;
+        private readonly UserManager<UserApplication> userManager;
         private readonly ILogger<HomeController> _logger;
       
         public HomeController(AppContextDb context, ILogger<HomeController> logger)
@@ -44,7 +44,13 @@ namespace ExpensesTracker.Controllers
         public async Task<IActionResult> AddExpense(AddItemDTO itemDTO)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var user = await _context.Users.FindAsync(userId);
+            if (user == null) { return BadRequest("User Not Found"); }
+            if (user.Balance < itemDTO.Amount) { return Ok("Insufficient Balance"); }
+            user.Balance -= itemDTO.Amount;
+
             // user is a predefined term 
+           
 
             var item = new ExpensesModel
             {
@@ -54,12 +60,13 @@ namespace ExpensesTracker.Controllers
                 Date = DateTime.Now,
                 Amount = itemDTO.Amount,
                 Category = itemDTO.Category,
-                UserId = userId
-
+                UserId = userId,
+                BalanceAfter = user.Balance
+                
             };
             await _context.Expenses.AddAsync(item);
             await _context.SaveChangesAsync();
-            return Ok(_context.Expenses.ToList());
+            return Ok(item);
         }
         [HttpPut("EditItem/{id}")]
         public async Task<IActionResult> UpdateItem(int id,UpdateItemDTO itemDTO)
@@ -73,7 +80,7 @@ namespace ExpensesTracker.Controllers
 
             UpdateItem.Title = itemDTO.Title;
             UpdateItem.Description = itemDTO.Description;
-            UpdateItem.Date = DateTime.Now;
+            UpdateItem.Date = itemDTO.Date;
            UpdateItem.UpdatedAt = DateTime.Now;
 
          

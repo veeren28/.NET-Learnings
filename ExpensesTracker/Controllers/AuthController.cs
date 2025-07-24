@@ -1,4 +1,5 @@
 ﻿using ExpensesTracker.DTOs;
+using ExpensesTracker.Models;
 using ExpensesTracker.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -12,11 +13,11 @@ namespace ExpensesTracker.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
-        private readonly UserManager<IdentityUser> _userManager; // Handles user-related actions (create, find, delete, etc.)
-        private readonly SignInManager<IdentityUser> _signInManager; // Handles password verification and login checks
+        private readonly UserManager<UserApplication> _userManager; // Handles user-related actions (create, find, delete, etc.)
+        private readonly SignInManager<UserApplication> _signInManager; // Handles password verification and login checks
         private readonly GenerateJWTtoken _generateJWTtoken; // Our custom service that creates a JWT token
 
-        public AuthController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, GenerateJWTtoken generateJWTtoken)
+        public AuthController(UserManager<UserApplication> userManager, SignInManager<UserApplication> signInManager, GenerateJWTtoken generateJWTtoken)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -67,10 +68,11 @@ namespace ExpensesTracker.Controllers
             if (!ModelState.IsValid) {
                 return BadRequest("User already exsists");
             }
-            var user = new IdentityUser
+            var user = new UserApplication
             {
                 Email = register.Email,
-                UserName = register.Username,
+                UserName = register.UserName,
+                Balance = register.Balance ?? 0,
 
             };
             var exist =await  _userManager.FindByEmailAsync(user.Email);
@@ -79,7 +81,7 @@ namespace ExpensesTracker.Controllers
             {
                 if (user == null) return BadRequest("Invalid User");
                 var result = await _userManager.CreateAsync(user, register.Password);
-                if (result.Succeeded) { return Ok(register.Username + "User Created Successfully"); }
+                if (result.Succeeded) { return Ok(register.UserName + "User Created Successfully"); }
                 else { return BadRequest(result.Errors); }
 
 

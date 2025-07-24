@@ -7,13 +7,14 @@ namespace ExpensesTracker.Models
     public class ExpensesModel
     {
         [Key]
+        //this is the id for eachh expense
         public int Id { get; set; }
 
         [Required]
         public string? UserId { get; set; }
 
         [ForeignKey("UserId")]
-        public IdentityUser User { get; set; } // Or rename to `User` or `Owner`
+        public UserApplication User { get; set; } // Or rename to `User` or `Owner`
 
         [Required]
         [StringLength(100, ErrorMessage = "Title should be less than 100 characters")]

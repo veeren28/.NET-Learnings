@@ -12,7 +12,11 @@ namespace ExpensesTracker.DTOs
         // Validates presence and minimum length
         [Required(ErrorMessage = "Username is required")]
         [MinLength(8, ErrorMessage = "Username must be at least 8 characters long")]
-        public string Username { get; set; }
+        public string UserName { get; set; }
+
+        [Required(ErrorMessage ="Enter Your Balance")]public decimal ? Balance { get; set; }
+        // w/o ? by default Balance value is assigned as null and the errror Is not
+        //(cont) triggered when user register w/o filling the Balance Section
 
         // Validates password with minimum length
         [Required(ErrorMessage = "Password is required")]

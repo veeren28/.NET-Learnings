@@ -6,19 +6,19 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ExpensesTracker.Data
 {
-    public class AppContextDb:IdentityDbContext<IdentityUser>
-        //will add custom in future if required
+    public class AppContextDb:IdentityDbContext<UserApplication>
+        
     {
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            base.OnModelCreating(modelBuilder);
+        //protected override void OnModelCreating(ModelBuilder modelBuilder)
+        //{
+        //    //base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<ExpensesModel>()
-                .HasOne(e => e.User)
-                .WithMany()
-                .HasForeignKey(e => e.UserId)
-                .IsRequired();
-        }
+        //modelBuilder.Entity<ExpensesModel>()
+        //    .HasOne(e => e.User)
+        //    .WithMany()
+        //    .HasForeignKey(e => e.UserId)
+        //    .IsRequired();
+        //}
 
         public AppContextDb(DbContextOptions<AppContextDb> options) : base(options) { }
         public DbSet<ExpensesModel> Expenses { get; set; }
