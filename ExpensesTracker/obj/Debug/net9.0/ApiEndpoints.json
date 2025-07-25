@@ -60,13 +60,13 @@
   {
     "ContainingType": "ExpensesTracker.Controllers.HomeController",
     "Method": "DeleteItem",
-    "RelativePath": "api/Home/Delete/{Id}",
+    "RelativePath": "api/Home/Delete/{id}",
     "HttpMethod": "DELETE",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
-        "Name": "Id",
+        "Name": "id",
         "Type": "System.Int32",
         "IsRequired": true
       }

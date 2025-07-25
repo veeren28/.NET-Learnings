@@ -18,6 +18,7 @@ namespace ExpensesTracker.DTOs
         [StringLength(300)]
         public string? Description { get; set; } = "";
 
+        public string CategoryName { get; set; }
         
         public DateTime Date { get; set; } // Expense date
 
