@@ -1,6 +1,6 @@
 ﻿using ExpensesTracker.Data;
 using ExpensesTracker.DTOs;
-using ExpensesTracker.DTOs.CategoryDTO_s;
+
 using ExpensesTracker.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -42,24 +42,25 @@ namespace ExpensesTracker.Controllers
             
 
         }
-        [HttpPut("EditCategory")]
-        public async Task<IActionResult> EditCategory(EditCategoryDTO editCategoryDTO)
+        [HttpPut("EditCategory/{NameCategory}")]
+        public async Task<IActionResult> EditCategory(string NameCategory,EditCategoryDTO editCategoryDTO)
         {
             if (!ModelState.IsValid) { return BadRequest(); }
+            if (NameCategory == "") return BadRequest("Invalid");
             if (editCategoryDTO == null) { return BadRequest("Invalid"); }
-            var check  =  await _context.Category.FirstOrDefaultAsync(c=>c.CategoryName== editCategoryDTO.CategoryName);
+            var check  =  await _context.Category.FirstOrDefaultAsync(c=>c.CategoryName== NameCategory);
             if (check == null) { return NotFound("no such Entry Exists"); }
             check.CategoryName = editCategoryDTO.CategoryName;
             await _context.SaveChangesAsync();
             return Ok(check.CategoryName + " Added Sucesfully");
 
         }
-        [HttpDelete("DeleteCategory")]
-        public async Task<IActionResult> DeleteCategory(DeleteCategoryDTO deleteCategoryDTO)
+        [HttpDelete("DeleteCategory/{NameOfCategory}")]
+        public async Task<IActionResult> DeleteCategory(string NameOfCategory)
         {
             if(!ModelState.IsValid) { return BadRequest(); }
-            if (deleteCategoryDTO == null) { return BadRequest("Invalid"); }
-            var delete = await _context.Category.FirstOrDefaultAsync(c=>c.CategoryName== deleteCategoryDTO.CategoryName);
+            if (NameOfCategory == "") return BadRequest("Invalid");
+            var delete = await _context.Category.FirstOrDefaultAsync(c=>c.CategoryName== NameOfCategory);
             if (delete == null) {   return NotFound("No such category Exists"); }
              _context.Category.Remove(delete);
             await _context.SaveChangesAsync();

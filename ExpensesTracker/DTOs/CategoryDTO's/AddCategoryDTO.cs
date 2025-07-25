@@ -6,6 +6,7 @@ namespace ExpensesTracker.DTOs
     {
 
         [Required (ErrorMessage ="Category should not be empty")]
+        [RegularExpression(@"^\S+$", ErrorMessage = "Category name cannot contain whitespace.")]
         public string CategoryName { get; set; }
 
     }

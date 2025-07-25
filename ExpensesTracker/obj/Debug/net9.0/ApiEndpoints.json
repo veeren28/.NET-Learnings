@@ -60,14 +60,14 @@
   {
     "ContainingType": "ExpensesTracker.Controllers.CategoryController",
     "Method": "DeleteCategory",
-    "RelativePath": "api/Category/DeleteCategory",
+    "RelativePath": "api/Category/DeleteCategory/{NameOfCategory}",
     "HttpMethod": "DELETE",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
-        "Name": "deleteCategoryDTO",
-        "Type": "ExpensesTracker.DTOs.CategoryDTO_s.DeleteCategoryDTO",
+        "Name": "NameOfCategory",
+        "Type": "System.String",
         "IsRequired": true
       }
     ],
@@ -76,11 +76,16 @@
   {
     "ContainingType": "ExpensesTracker.Controllers.CategoryController",
     "Method": "EditCategory",
-    "RelativePath": "api/Category/EditCategory",
+    "RelativePath": "api/Category/EditCategory/{NameCategory}",
     "HttpMethod": "PUT",
     "IsController": true,
     "Order": 0,
     "Parameters": [
+      {
+        "Name": "NameCategory",
+        "Type": "System.String",
+        "IsRequired": true
+      },
       {
         "Name": "editCategoryDTO",
         "Type": "ExpensesTracker.DTOs.EditCategoryDTO",
