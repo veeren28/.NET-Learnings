@@ -25,9 +25,9 @@ namespace ExpensesTracker.Controllers
         return Ok(_context.Category.ToList());
         }
         [HttpPost("AddCategory")]
-        public async Task<IActionResult> AddCategory(AddCategoryDTO CategoryDTO)
+        public async Task<IActionResult> AddCategory([FromBody]AddCategoryDTO CategoryDTO)
         {
-            if (CategoryDTO == null) { return BadRequest("Invalid"); }
+            if (CategoryDTO == null || String.IsNullOrWhiteSpace(CategoryDTO.CategoryName)|| CategoryDTO.CategoryName.Contains(" ") ){ return BadRequest("Invalid"); }
             var categoryName = CategoryDTO.CategoryName;
             var check = await _context.Category.FirstOrDefaultAsync(c=>c.CategoryName==categoryName);
             if (check != null) { return BadRequest("Already Exists"); }
@@ -43,11 +43,12 @@ namespace ExpensesTracker.Controllers
 
         }
         [HttpPut("EditCategory/{NameCategory}")]
-        public async Task<IActionResult> EditCategory(string NameCategory,EditCategoryDTO editCategoryDTO)
+        public async Task<IActionResult> EditCategory(string NameCategory,[FromBody]EditCategoryDTO editCategoryDTO)
         {
             if (!ModelState.IsValid) { return BadRequest(); }
-            if (NameCategory == "") return BadRequest("Invalid");
-            if (editCategoryDTO == null) { return BadRequest("Invalid"); }
+          
+            if (String.IsNullOrWhiteSpace(NameCategory) || NameCategory.Contains(" ")) return BadRequest("Invalid");
+            if (editCategoryDTO == null || String.IsNullOrWhiteSpace(editCategoryDTO.CategoryName)|| editCategoryDTO.CategoryName.Contains(" ")) { return BadRequest("Invalid"); }
             var check  =  await _context.Category.FirstOrDefaultAsync(c=>c.CategoryName== NameCategory);
             if (check == null) { return NotFound("no such Entry Exists"); }
             check.CategoryName = editCategoryDTO.CategoryName;
@@ -59,7 +60,7 @@ namespace ExpensesTracker.Controllers
         public async Task<IActionResult> DeleteCategory(string NameOfCategory)
         {
             if(!ModelState.IsValid) { return BadRequest(); }
-            if (NameOfCategory == "") return BadRequest("Invalid");
+            if (String.IsNullOrWhiteSpace(NameOfCategory)||NameOfCategory.Contains(" ")) return BadRequest("Invalid");
             var delete = await _context.Category.FirstOrDefaultAsync(c=>c.CategoryName== NameOfCategory);
             if (delete == null) {   return NotFound("No such category Exists"); }
              _context.Category.Remove(delete);
