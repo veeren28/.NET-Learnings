@@ -36,5 +36,6 @@ namespace ExpensesTracker.Data
         public AppContextDb(DbContextOptions<AppContextDb> options) : base(options) { }
         public DbSet<ExpensesModel> Expenses { get; set; }
         public DbSet<CategoryModel> Category { get; set; }
+        public DbSet<IncomeModel> Income { get; set; }
     }
 }

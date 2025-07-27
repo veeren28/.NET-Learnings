@@ -1,5 +1,6 @@
 ﻿using ExpensesTracker.Data;
 using ExpensesTracker.DTOs;
+using ExpensesTracker.DTOs.SummaryDTO_s;
 using ExpensesTracker.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -134,5 +135,47 @@ namespace ExpensesTracker.Controllers
 
             return Ok($"Item '{deleteItem.Title}' with ID {id} deleted and balance updated.");
         }
+
+        [HttpGet("summary/monthly")]
+        public async Task<ActionResult<IEnumerable<ExpenseSummaryByMonthDTO>>> GetMonthlySummary()
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (userId == null) return Unauthorized();
+
+            var summary = await _context.Expenses
+                .Where(e => e.UserId == userId)
+                .GroupBy(e => new { e.Date.Year, e.Date.Month })
+                .Select(g => new ExpenseSummaryByMonthDTO
+                {
+                    Year = g.Key.Year,
+                    Month = g.Key.Month,
+                    TotalAmount = g.Sum(e => e.Amount)
+                })
+                .OrderByDescending(g => g.Year).ThenByDescending(g => g.Month)
+                .ToListAsync();
+
+            return Ok(summary);
+        }
+        [HttpGet("summary/daily")]
+        public async Task<ActionResult<IEnumerable<ExpenseSummaryByDateDTO>>> GetDailySummary()
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (userId == null) return Unauthorized();
+
+            var summary = await _context.Expenses
+                .Where(e => e.UserId == userId)
+                .GroupBy(e => e.Date.Date)
+                .Select(g => new ExpenseSummaryByDateDTO
+                {
+                    Date = g.Key,
+                    TotalAmount = g.Sum(e => e.Amount)
+                })
+                .OrderByDescending(g => g.Date)
+                .ToListAsync();
+
+            return Ok(summary);
+        }
+
+
     }
 }

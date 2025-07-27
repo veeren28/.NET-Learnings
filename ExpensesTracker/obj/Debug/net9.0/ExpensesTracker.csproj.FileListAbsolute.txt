@@ -171,4 +171,3 @@ E:\.NET\ExpensesTracker\obj\Debug\net9.0\refint\ExpensesTracker.dll
 E:\.NET\ExpensesTracker\obj\Debug\net9.0\ExpensesTracker.pdb
 E:\.NET\ExpensesTracker\obj\Debug\net9.0\ExpensesTracker.genruntimeconfig.cache
 E:\.NET\ExpensesTracker\obj\Debug\net9.0\ref\ExpensesTracker.dll
-E:\.NET\ExpensesTracker\obj\Debug\net9.0\staticwebassets.upToDateCheck.txt

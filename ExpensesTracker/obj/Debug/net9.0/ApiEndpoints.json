@@ -156,5 +156,45 @@
       }
     ],
     "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ExpensesTracker.Controllers.HomeController",
+    "Method": "GetDailySummary",
+    "RelativePath": "api/Home/summary/daily",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[ExpensesTracker.DTOs.SummaryDTO_s.ExpenseSummaryByDateDTO, ExpensesTracker, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "ExpensesTracker.Controllers.HomeController",
+    "Method": "GetMonthlySummary",
+    "RelativePath": "api/Home/summary/monthly",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[ExpensesTracker.DTOs.SummaryDTO_s.ExpenseSummaryByMonthDTO, ExpensesTracker, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
   }
 ]
