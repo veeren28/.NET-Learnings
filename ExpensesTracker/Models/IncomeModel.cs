@@ -23,6 +23,9 @@ namespace ExpensesTracker.Models
         [Range(0.01, 1000000, ErrorMessage = "Amount Should be Greater Than 0")]
         [Column(TypeName = "decimal(18,2)")]
         public decimal Amount { get; set; }
+        [Required]
+        [Column(TypeName ="decimal(18,2)")]
+        public decimal Balance { get; set; }
 
         [Required]
         [DataType(DataType.Date)]
@@ -31,14 +34,13 @@ namespace ExpensesTracker.Models
         [StringLength(300)]
         public string? Description { get; set; }
 
-        [Required]
-        public DateTime CreatedAt { get; set; }
+     
 
         public DateTime? UpdatedAt { get; set; }
 
-        [Required]
-        public int CategoryId { get; set; }
-        [ForeignKey("CategoryId")]
-        public CategoryModel Category { get; set; }
+        
+
+        public int TransactionId { get; set; }  
+        public TransactionModel Transaction { get; set; }
     }
 } 

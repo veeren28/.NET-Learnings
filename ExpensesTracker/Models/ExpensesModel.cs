@@ -25,22 +25,21 @@ namespace ExpensesTracker.Models
         [Column(TypeName = "decimal(18,2)")]
         public decimal Amount { get; set; }
 
+        
+        [Column(TypeName = "decimal(18,2)")]
+        public decimal BalanceAfter { get; set; }
+
         [Required]
         [StringLength(100)]
        
         [DataType(DataType.Date)]
         public DateTime Date { get; set; }
 
-        [Required]
-        [Column(TypeName = "decimal(18,2)")]
-        public decimal BalanceAfter { get; set; }
 
         [Required]
         [StringLength(300)]
         public string? Description { get; set; }
 
-        [Required]
-        public DateTime CreatedAt { get; set; }
 
         public DateTime? UpdatedAt { get; set; }
 
@@ -51,5 +50,8 @@ namespace ExpensesTracker.Models
         [ForeignKey("CategoryId")]
         public CategoryModel Category { get; set; }
         // Navigation
+
+        public int TransactionId { get; set; }
+        public TransactionModel Transaction { get; set; }
     }
 }

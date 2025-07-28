@@ -7,19 +7,19 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
-using System.Threading.Tasks;
+
 
 namespace ExpensesTracker.Controllers
 {
     [Authorize]
     [Route("api/[controller]")]
     [ApiController]
-    public class HomeController : ControllerBase
+    public class ExpenseController : ControllerBase
     {
         private readonly AppContextDb _context;
         private readonly UserManager<UserApplication> _userManager;
 
-        public HomeController(AppContextDb context, UserManager<UserApplication> userManager)
+        public ExpenseController(AppContextDb context, UserManager<UserApplication> userManager)
         {
             _context = context;
             _userManager = userManager;
@@ -38,7 +38,8 @@ namespace ExpensesTracker.Controllers
             return Ok(list);
         }
 
-        [HttpPost("AddItem")]
+        //add expense.
+        [HttpPost]
         public async Task<IActionResult> AddExpense(AddItemDTO itemDTO)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -57,6 +58,24 @@ namespace ExpensesTracker.Controllers
                 return NotFound("Category not found");
 
             user.Balance -= itemDTO.Amount;
+            _context.Users.Update(user);
+
+            var transaction = new TransactionModel
+            {
+                Amount = itemDTO.Amount,
+                Title = itemDTO.Title,
+                Date = DateTime.Now,
+                Description = itemDTO.Description,
+                Balance = user.Balance,
+                UserID = userId,
+
+
+
+
+
+            };
+            await _context.Transaction.AddAsync(transaction);
+            await _context.SaveChangesAsync();
 
             var item = new ExpensesModel
             {
@@ -66,7 +85,8 @@ namespace ExpensesTracker.Controllers
                 Amount = itemDTO.Amount,
                 CategoryId = category.Id,
                 UserId = userId,
-                BalanceAfter = user.Balance
+                BalanceAfter = user.Balance,
+                TransactionId = transaction.Id
             };
 
             await _context.Expenses.AddAsync(item);
@@ -75,7 +95,7 @@ namespace ExpensesTracker.Controllers
             return Ok(item);
         }
 
-        [HttpPut("EditItem/{id}")]
+        [HttpPut("{id}")]
         public async Task<IActionResult> UpdateItem(int id, UpdateItemDTO itemDTO)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -97,11 +117,22 @@ namespace ExpensesTracker.Controllers
             // Refund old amount
             user.Balance += updateItem.Amount;
 
+
+
             // Check if enough balance to deduct new amount
             if (user.Balance < itemDTO.Amount)
+            {
+                _context.Users.Update(user);
                 return BadRequest("Insufficient balance for update");
+            }
 
             user.Balance -= itemDTO.Amount;
+
+
+          
+            _context.Users.Update(user);
+
+
 
             updateItem.Title = itemDTO.Title;
             updateItem.Description = itemDTO.Description;
@@ -111,11 +142,22 @@ namespace ExpensesTracker.Controllers
             updateItem.UpdatedAt = DateTime.Now;
             updateItem.BalanceAfter = user.Balance;
 
+
+
+            var updatetransactions = await _context.Transaction.FindAsync(updateItem.TransactionId);
+            if (updatetransactions == null) return BadRequest();
+            updatetransactions.Title = itemDTO.Title;
+            updatetransactions.Description = itemDTO.Description;
+            updatetransactions.Amount = itemDTO.Amount;
+            updatetransactions.Date = itemDTO.Date;
+            updatetransactions.Balance = user.Balance;
+
+
             await _context.SaveChangesAsync();
             return Ok(updateItem);
         }
 
-        [HttpDelete("Delete/{id}")]
+        [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteItem(int id)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -129,6 +171,13 @@ namespace ExpensesTracker.Controllers
                 return BadRequest("Item not found or not authorized");
 
             user.Balance += deleteItem.Amount;
+            _context.Users.Update(user);
+
+
+            var deleteTransaction = await _context.Transaction.FindAsync(deleteItem.TransactionId);
+            if (deleteTransaction == null) return BadRequest();
+            _context.Transaction.Remove(deleteTransaction);
+           
 
             _context.Expenses.Remove(deleteItem);
             await _context.SaveChangesAsync();
@@ -136,45 +185,7 @@ namespace ExpensesTracker.Controllers
             return Ok($"Item '{deleteItem.Title}' with ID {id} deleted and balance updated.");
         }
 
-        [HttpGet("summary/monthly")]
-        public async Task<ActionResult<IEnumerable<ExpenseSummaryByMonthDTO>>> GetMonthlySummary()
-        {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            if (userId == null) return Unauthorized();
-
-            var summary = await _context.Expenses
-                .Where(e => e.UserId == userId)
-                .GroupBy(e => new { e.Date.Year, e.Date.Month })
-                .Select(g => new ExpenseSummaryByMonthDTO
-                {
-                    Year = g.Key.Year,
-                    Month = g.Key.Month,
-                    TotalAmount = g.Sum(e => e.Amount)
-                })
-                .OrderByDescending(g => g.Year).ThenByDescending(g => g.Month)
-                .ToListAsync();
-
-            return Ok(summary);
-        }
-        [HttpGet("summary/daily")]
-        public async Task<ActionResult<IEnumerable<ExpenseSummaryByDateDTO>>> GetDailySummary()
-        {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            if (userId == null) return Unauthorized();
-
-            var summary = await _context.Expenses
-                .Where(e => e.UserId == userId)
-                .GroupBy(e => e.Date.Date)
-                .Select(g => new ExpenseSummaryByDateDTO
-                {
-                    Date = g.Key,
-                    TotalAmount = g.Sum(e => e.Amount)
-                })
-                .OrderByDescending(g => g.Date)
-                .ToListAsync();
-
-            return Ok(summary);
-        }
+    
 
 
     }

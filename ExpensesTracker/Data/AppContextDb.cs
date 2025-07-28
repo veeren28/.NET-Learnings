@@ -3,11 +3,12 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection.Emit;
 
 namespace ExpensesTracker.Data
 {
     public class AppContextDb:IdentityDbContext<UserApplication>
-        
+
     {
         //protected override void OnModelCreating(ModelBuilder modelBuilder)
         //{
@@ -21,7 +22,9 @@ namespace ExpensesTracker.Data
         //}
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            
+
+
+
             base.OnModelCreating(builder);
 
             builder.Entity<CategoryModel>().HasData(
@@ -30,11 +33,28 @@ namespace ExpensesTracker.Data
                 new CategoryModel { Id = 3, CategoryName = "Medical" }
 
                 );
+
+            builder.Entity<ExpensesModel>()
+    .HasOne(e => e.Transaction)
+    .WithOne(t => t.Expenses)
+    .HasForeignKey<ExpensesModel>(e => e.TransactionId) // clearly defines FK
+    .OnDelete(DeleteBehavior.Restrict); // avoids cascade cycle
+
+            builder.Entity<IncomeModel>()
+                .HasOne(i => i.Transaction)
+                .WithOne(t => t.Income)
+                .HasForeignKey<IncomeModel>(i => i.TransactionId) // clearly defines FK
+                .OnDelete(DeleteBehavior.Restrict); // avoids cascade cycle
+
+
+
+            // defining 
         }
 
 
         public AppContextDb(DbContextOptions<AppContextDb> options) : base(options) { }
         public DbSet<ExpensesModel> Expenses { get; set; }
+        public DbSet<TransactionModel> Transaction { get; set; }    
         public DbSet<CategoryModel> Category { get; set; }
         public DbSet<IncomeModel> Income { get; set; }
     }
