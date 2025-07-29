@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ExpensesTracker.Migrations
 {
     [DbContext(typeof(AppContextDb))]
-    [Migration("20250726085037_CursorDEvelopment")]
-    partial class CursorDEvelopment
+    [Migration("20250729175012_finalAppContextDbsss")]
+    partial class finalAppContextDbsss
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -50,22 +50,57 @@ namespace ExpensesTracker.Migrations
                         new
                         {
                             Id = 2,
-                            CategoryName = "Travelling"
+                            CategoryName = "Transport"
                         },
                         new
                         {
                             Id = 3,
-                            CategoryName = "Medical"
+                            CategoryName = "Utilities"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            CategoryName = "Health"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            CategoryName = "Entertainment"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            CategoryName = "Shopping"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            CategoryName = "Education"
+                        },
+                        new
+                        {
+                            Id = 8,
+                            CategoryName = "Salary"
+                        },
+                        new
+                        {
+                            Id = 9,
+                            CategoryName = "Investment"
+                        },
+                        new
+                        {
+                            Id = 10,
+                            CategoryName = "Other"
                         });
                 });
 
             modelBuilder.Entity("ExpensesTracker.Models.ExpensesModel", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("ExpenseId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ExpenseId"));
 
                     b.Property<decimal>("Amount")
                         .HasColumnType("decimal(18,2)");
@@ -75,9 +110,6 @@ namespace ExpensesTracker.Migrations
 
                     b.Property<int>("CategoryId")
                         .HasColumnType("int");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
 
                     b.Property<DateTime>("Date")
                         .HasMaxLength(100)
@@ -93,6 +125,9 @@ namespace ExpensesTracker.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
+                    b.Property<int>("TransactionId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
 
@@ -100,9 +135,12 @@ namespace ExpensesTracker.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.HasKey("Id");
+                    b.HasKey("ExpenseId");
 
                     b.HasIndex("CategoryId");
+
+                    b.HasIndex("TransactionId")
+                        .IsUnique();
 
                     b.HasIndex("UserId");
 
@@ -120,11 +158,8 @@ namespace ExpensesTracker.Migrations
                     b.Property<decimal>("Amount")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<int>("CategoryId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
+                    b.Property<decimal>("Balance")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
@@ -138,6 +173,9 @@ namespace ExpensesTracker.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
+                    b.Property<int>("TransactionId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
 
@@ -147,11 +185,48 @@ namespace ExpensesTracker.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CategoryId");
+                    b.HasIndex("TransactionId")
+                        .IsUnique();
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Income");
+                    b.ToTable("Incomes");
+                });
+
+            modelBuilder.Entity("ExpensesTracker.Models.TransactionModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("Balance")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserID")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserID");
+
+                    b.ToTable("Transactions");
                 });
 
             modelBuilder.Entity("ExpensesTracker.Models.UserApplication", b =>
@@ -364,34 +439,53 @@ namespace ExpensesTracker.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("ExpensesTracker.Models.TransactionModel", "Transaction")
+                        .WithOne()
+                        .HasForeignKey("ExpensesTracker.Models.ExpensesModel", "TransactionId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
                     b.HasOne("ExpensesTracker.Models.UserApplication", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Category");
+
+                    b.Navigation("Transaction");
 
                     b.Navigation("User");
                 });
 
             modelBuilder.Entity("ExpensesTracker.Models.IncomeModel", b =>
                 {
-                    b.HasOne("ExpensesTracker.Models.CategoryModel", "Category")
-                        .WithMany()
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                    b.HasOne("ExpensesTracker.Models.TransactionModel", "Transaction")
+                        .WithOne()
+                        .HasForeignKey("ExpensesTracker.Models.IncomeModel", "TransactionId")
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("ExpensesTracker.Models.UserApplication", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Transaction");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("ExpensesTracker.Models.TransactionModel", b =>
+                {
+                    b.HasOne("ExpensesTracker.Models.UserApplication", "Username")
+                        .WithMany()
+                        .HasForeignKey("UserID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Category");
-
-                    b.Navigation("User");
+                    b.Navigation("Username");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

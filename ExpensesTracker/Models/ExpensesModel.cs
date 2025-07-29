@@ -8,7 +8,7 @@ namespace ExpensesTracker.Models
     {
         [Key]
         //this is the id for eachh expense
-        public int Id { get; set; }
+        public int ExpenseId { get; set; }
 
         [Required]
         public string? UserId { get; set; }
@@ -45,11 +45,11 @@ namespace ExpensesTracker.Models
 
 
         // category
-        [Required  ]
+        [Required]
         public int CategoryId { get; set; }
-        [ForeignKey("CategoryId")]
+        //[ForeignKey("CategoryId")]
         public CategoryModel Category { get; set; }
-        // Navigation
+        //Navigation
 
         public int TransactionId { get; set; }
         public TransactionModel Transaction { get; set; }

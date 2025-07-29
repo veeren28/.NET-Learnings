@@ -74,7 +74,7 @@ namespace ExpensesTracker.Controllers
 
 
             };
-            await _context.Transaction.AddAsync(transaction);
+            await _context.Transactions.AddAsync(transaction);
             await _context.SaveChangesAsync();
 
             var item = new ExpensesModel
@@ -83,7 +83,7 @@ namespace ExpensesTracker.Controllers
                 Description = itemDTO.Description,
                 Date = DateTime.Now,
                 Amount = itemDTO.Amount,
-                CategoryId = category.Id,
+                //CategoryId = category.Id,
                 UserId = userId,
                 BalanceAfter = user.Balance,
                 TransactionId = transaction.Id
@@ -137,14 +137,14 @@ namespace ExpensesTracker.Controllers
             updateItem.Title = itemDTO.Title;
             updateItem.Description = itemDTO.Description;
             updateItem.Amount = itemDTO.Amount;
-            updateItem.CategoryId = category.Id;
+            //updateItem.CategoryId = category.Id;
             updateItem.Date = itemDTO.Date;
             updateItem.UpdatedAt = DateTime.Now;
             updateItem.BalanceAfter = user.Balance;
 
 
 
-            var updatetransactions = await _context.Transaction.FindAsync(updateItem.TransactionId);
+            var updatetransactions = await _context.Transactions.FindAsync(updateItem.TransactionId);
             if (updatetransactions == null) return BadRequest();
             updatetransactions.Title = itemDTO.Title;
             updatetransactions.Description = itemDTO.Description;
@@ -174,9 +174,9 @@ namespace ExpensesTracker.Controllers
             _context.Users.Update(user);
 
 
-            var deleteTransaction = await _context.Transaction.FindAsync(deleteItem.TransactionId);
+            var deleteTransaction = await _context.Transactions.FindAsync(deleteItem.TransactionId);
             if (deleteTransaction == null) return BadRequest();
-            _context.Transaction.Remove(deleteTransaction);
+            _context.Transactions.Remove(deleteTransaction);
            
 
             _context.Expenses.Remove(deleteItem);

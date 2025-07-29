@@ -30,7 +30,7 @@ namespace ExpensesTracker.Models
         public UserApplication Username { get; set; }
 
         // These will establish one-to-one relationships
-        public IncomeModel Income { get; set; }
-        public ExpensesModel Expenses { get; set; }
+        //public IncomeModel? Income { get; set; }
+        //public ExpensesModel? Expenses { get; set; }
     }
 }

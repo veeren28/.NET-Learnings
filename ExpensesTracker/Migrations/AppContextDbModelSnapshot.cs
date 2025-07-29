@@ -47,22 +47,57 @@ namespace ExpensesTracker.Migrations
                         new
                         {
                             Id = 2,
-                            CategoryName = "Travelling"
+                            CategoryName = "Transport"
                         },
                         new
                         {
                             Id = 3,
-                            CategoryName = "Medical"
+                            CategoryName = "Utilities"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            CategoryName = "Health"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            CategoryName = "Entertainment"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            CategoryName = "Shopping"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            CategoryName = "Education"
+                        },
+                        new
+                        {
+                            Id = 8,
+                            CategoryName = "Salary"
+                        },
+                        new
+                        {
+                            Id = 9,
+                            CategoryName = "Investment"
+                        },
+                        new
+                        {
+                            Id = 10,
+                            CategoryName = "Other"
                         });
                 });
 
             modelBuilder.Entity("ExpensesTracker.Models.ExpensesModel", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("ExpenseId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ExpenseId"));
 
                     b.Property<decimal>("Amount")
                         .HasColumnType("decimal(18,2)");
@@ -97,7 +132,7 @@ namespace ExpensesTracker.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.HasKey("Id");
+                    b.HasKey("ExpenseId");
 
                     b.HasIndex("CategoryId");
 
@@ -152,7 +187,7 @@ namespace ExpensesTracker.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Income");
+                    b.ToTable("Incomes");
                 });
 
             modelBuilder.Entity("ExpensesTracker.Models.TransactionModel", b =>
@@ -188,7 +223,7 @@ namespace ExpensesTracker.Migrations
 
                     b.HasIndex("UserID");
 
-                    b.ToTable("Transaction");
+                    b.ToTable("Transactions");
                 });
 
             modelBuilder.Entity("ExpensesTracker.Models.UserApplication", b =>
@@ -402,15 +437,15 @@ namespace ExpensesTracker.Migrations
                         .IsRequired();
 
                     b.HasOne("ExpensesTracker.Models.TransactionModel", "Transaction")
-                        .WithOne("Expenses")
+                        .WithOne()
                         .HasForeignKey("ExpensesTracker.Models.ExpensesModel", "TransactionId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("ExpensesTracker.Models.UserApplication", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Category");
@@ -423,15 +458,15 @@ namespace ExpensesTracker.Migrations
             modelBuilder.Entity("ExpensesTracker.Models.IncomeModel", b =>
                 {
                     b.HasOne("ExpensesTracker.Models.TransactionModel", "Transaction")
-                        .WithOne("Income")
+                        .WithOne()
                         .HasForeignKey("ExpensesTracker.Models.IncomeModel", "TransactionId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("ExpensesTracker.Models.UserApplication", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Transaction");
@@ -504,15 +539,6 @@ namespace ExpensesTracker.Migrations
             modelBuilder.Entity("ExpensesTracker.Models.CategoryModel", b =>
                 {
                     b.Navigation("Expenses");
-                });
-
-            modelBuilder.Entity("ExpensesTracker.Models.TransactionModel", b =>
-                {
-                    b.Navigation("Expenses")
-                        .IsRequired();
-
-                    b.Navigation("Income")
-                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

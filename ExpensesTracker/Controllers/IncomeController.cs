@@ -30,7 +30,7 @@ namespace ExpensesTracker.Controllers
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (userId == null) return Unauthorized();
 
-            var list = await _context.Income
+            var list = await _context.Incomes
                 .Where(i => i.UserId == userId)
                 .ToListAsync();
 
@@ -63,7 +63,7 @@ namespace ExpensesTracker.Controllers
                 Date = now,
                 UserID = userId,
             };
-            await _context.Transaction.AddAsync(transaction);
+            await _context.Transactions.AddAsync(transaction);
             await _context.SaveChangesAsync(); // Save transaction to get transaction.Id
 
             // Create and add income entry
@@ -77,7 +77,7 @@ namespace ExpensesTracker.Controllers
                 UserId = userId,
                 TransactionId = transaction.Id
             };
-            await _context.Income.AddAsync(income);
+            await _context.Incomes.AddAsync(income);
 
             // Update user balance
             _context.Users.Update(user);
@@ -97,7 +97,7 @@ namespace ExpensesTracker.Controllers
             var user = await _context.Users.FindAsync(userId);
             if (user == null) return BadRequest("User not found");
 
-            var income = await _context.Income.FindAsync(id);
+            var income = await _context.Incomes.FindAsync(id);
             if (income == null || income.UserId != userId)
                 return NotFound("Income not found or unauthorized.");
 
@@ -113,7 +113,7 @@ namespace ExpensesTracker.Controllers
             income.Balance = user.Balance;
 
             // Update transaction
-            var transaction = await _context.Transaction.FindAsync(income.TransactionId);
+            var transaction = await _context.Transactions.FindAsync(income.TransactionId);
             if (transaction == null || transaction.UserID != userId)
                 return BadRequest("Related transaction not found or unauthorized.");
 
@@ -140,7 +140,7 @@ namespace ExpensesTracker.Controllers
             var user = await _context.Users.FindAsync(userId);
             if (user == null) return BadRequest("User not found");
 
-            var income = await _context.Income.FindAsync(id);
+            var income = await _context.Incomes.FindAsync(id);
             if (income == null || income.UserId != userId)
                 return NotFound("Income not found or unauthorized.");
 
@@ -149,12 +149,12 @@ namespace ExpensesTracker.Controllers
             _context.Users.Update(user);
 
             // Remove income
-            _context.Income.Remove(income);
+            _context.Incomes.Remove(income);
 
             // Remove linked transaction if exists
-            var transaction = await _context.Transaction.FindAsync(income.TransactionId);
+            var transaction = await _context.Transactions.FindAsync(income.TransactionId);
             if (transaction != null)
-                _context.Transaction.Remove(transaction);
+                _context.Transactions.Remove(transaction);
 
             await _context.SaveChangesAsync();
 
