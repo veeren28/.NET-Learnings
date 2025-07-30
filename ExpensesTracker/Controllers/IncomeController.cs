@@ -62,7 +62,8 @@ namespace ExpensesTracker.Controllers
                 Balance = user.Balance,
                 Date = now,
                 UserID = userId,
-                Type = "Income"
+                Type = "Income",
+                
             };
             await _context.Transactions.AddAsync(transaction);
             await _context.SaveChangesAsync(); // Save transaction to get transaction.Id

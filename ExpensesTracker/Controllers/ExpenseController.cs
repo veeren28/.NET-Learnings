@@ -69,7 +69,9 @@ namespace ExpensesTracker.Controllers
                 Description = itemDTO.Description,
                 Balance = user.Balance,
                 UserID = userId,
-                Type = "Expense"
+                Type = "Expense",
+                CategoryName = itemDTO.CategoryName,
+                CategoryId = category.Id
 
 
 
@@ -161,19 +163,21 @@ public async Task<IActionResult> PatchItem(int id, UpdateItemDTO itemDTO)
             updateItem.Date = itemDTO.Date.Value;
             if (updateItem.Transaction != null)
                 updateItem.Transaction.Date = itemDTO.Date.Value;
-        }
+                }
 
-        if (!string.IsNullOrWhiteSpace(itemDTO.CategoryName))
-        {
-            var category = await _context.Category
-                .FirstOrDefaultAsync(c => c.CategoryName == itemDTO.CategoryName);
-            if (category == null) return NotFound("Category not found");
+                if (!string.IsNullOrWhiteSpace(itemDTO.CategoryName))
+                {
+                    var category = await _context.Category
+                        .FirstOrDefaultAsync(c => c.CategoryName == itemDTO.CategoryName);
+                    if (category == null) return NotFound("Category not found");
 
-            updateItem.CategoryId = category.Id;
-            updateItem.CategoryName = category.CategoryName;
-        }
+                    updateItem.CategoryId = category.Id;
+                    updateItem.CategoryName = category.CategoryName;
 
-        updateItem.UpdatedAt = DateTime.Now;
+
+                }
+
+                updateItem.UpdatedAt = DateTime.Now;
 
         await _context.SaveChangesAsync();
         return Ok("Expense updated successfully.");

@@ -31,6 +31,10 @@ namespace ExpensesTracker.Models
         [ForeignKey("UserID")]
         public UserApplication Username { get; set; }
 
+        public string CategoryName { get; set; }
+
+        public int CategoryId { get; set; }
+
         // These will establish one-to-one relationships
         public IncomeModel? Income { get; set; }
         public ExpensesModel? Expenses { get; set; }
