@@ -62,6 +62,7 @@ namespace ExpensesTracker.Controllers
                 Balance = user.Balance,
                 Date = now,
                 UserID = userId,
+                Type = "Income"
             };
             await _context.Transactions.AddAsync(transaction);
             await _context.SaveChangesAsync(); // Save transaction to get transaction.Id
@@ -88,8 +89,8 @@ namespace ExpensesTracker.Controllers
         }
 
         // PUT: api/Income/{id}
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateIncome(int id, [FromBody] UpdateIncomeDTO incomeDTO)
+        [HttpPatch("{id}")]
+        public async Task<IActionResult> PatchIncome(int id, [FromBody] UpdateIncomeDTO dto)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (userId == null) return Unauthorized();
@@ -101,34 +102,48 @@ namespace ExpensesTracker.Controllers
             if (income == null || income.UserId != userId)
                 return NotFound("Income not found or unauthorized.");
 
-            // Adjust user balance
-            user.Balance = user.Balance - income.Amount + incomeDTO.Amount;
-            _context.Users.Update(user);
-
-            // Update income
-            income.Title = incomeDTO.Title;
-            income.Description = incomeDTO.Description;
-            income.Date = incomeDTO.Date ?? income.Date;
-            income.Amount = incomeDTO.Amount;
-            income.Balance = user.Balance;
-
-            // Update transaction
             var transaction = await _context.Transactions.FindAsync(income.TransactionId);
             if (transaction == null || transaction.UserID != userId)
-                return BadRequest("Related transaction not found or unauthorized.");
+                return NotFound("Transaction not found or unauthorized.");
 
-            transaction.Title = incomeDTO.Title;
-            transaction.Description = incomeDTO.Description;
-            transaction.Date = incomeDTO.Date ?? income.Date;
-            transaction.Amount = incomeDTO.Amount;
-            transaction.Balance = user.Balance;
+            // Refund old amount if amount is changing
+            if (dto.Amount.HasValue && dto.Amount.Value != income.Amount)
+            {
+                user.Balance -= income.Amount; // remove old
+                user.Balance += dto.Amount.Value; // add new
+                income.Amount = dto.Amount.Value;
+                transaction.Amount = dto.Amount.Value;
+                income.Balance = user.Balance;
+                transaction.Balance = user.Balance;
+            }
 
-            // Save updates
+            // Patch other fields
+            if (!string.IsNullOrWhiteSpace(dto.Title))
+            {
+                income.Title = dto.Title;
+                transaction.Title = dto.Title;
+            }
+
+            if (!string.IsNullOrWhiteSpace(dto.Description))
+            {
+                income.Description = dto.Description;
+                transaction.Description = dto.Description;
+            }
+
+            if (dto.Date.HasValue)
+            {
+                income.Date = dto.Date.Value;
+                transaction.Date = dto.Date.Value;
+            }
+
+            income.UpdatedAt = DateTime.Now;
+
             _context.Users.Update(user);
             await _context.SaveChangesAsync();
 
-            return Ok("Income and Transaction updated successfully.");
+            return Ok("Income patched successfully.");
         }
+
 
         // DELETE: api/Income/{id}
         [HttpDelete("{id}")]

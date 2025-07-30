@@ -10,7 +10,7 @@ namespace ExpensesTracker.DTOs
         public string Title { get; set; }//source of income
 
         [Required]
-        [Range(0.01, 100000)]
+        [Range(0.01, 999999999999999)]
         [Column(TypeName = "decimal(18,2)")]
         public decimal Amount { get; set; }
 

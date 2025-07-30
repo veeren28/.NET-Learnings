@@ -42,6 +42,7 @@ namespace ExpensesTracker.Controllers
         [HttpPost]
         public async Task<IActionResult> AddExpense(AddItemDTO itemDTO)
         {
+            try{
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (userId == null) return Unauthorized();
 
@@ -68,6 +69,8 @@ namespace ExpensesTracker.Controllers
                 Description = itemDTO.Description,
                 Balance = user.Balance,
                 UserID = userId,
+                Type = "Expense"
+
 
 
 
@@ -83,109 +86,142 @@ namespace ExpensesTracker.Controllers
                 Description = itemDTO.Description,
                 Date = DateTime.Now,
                 Amount = itemDTO.Amount,
-                //CategoryId = category.Id,
+                CategoryId = category.Id,
+                CategoryName = category.CategoryName,
                 UserId = userId,
                 BalanceAfter = user.Balance,
-                TransactionId = transaction.Id
+                TransactionId = transaction.Id,
+                UserName = user.UserName
+                
             };
 
             await _context.Expenses.AddAsync(item);
             await _context.SaveChangesAsync();
 
-            return Ok(item);
+                return Ok(item.Title +" Added Succesfully"); }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal error: {ex.Message}");
+            }
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateItem(int id, UpdateItemDTO itemDTO)
+      [HttpPatch("{id}")]
+public async Task<IActionResult> PatchItem(int id, UpdateItemDTO itemDTO)
+{
+    try
+    {
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (userId == null) return Unauthorized();
+
+        var user = await _context.Users.FindAsync(userId);
+        if (user == null) return BadRequest("User not found");
+
+        var updateItem = await _context.Expenses
+            .Include(e => e.Transaction)
+            .FirstOrDefaultAsync(e => e.ExpenseId == id && e.UserId == userId);
+
+        if (updateItem == null) return BadRequest("Expense not found or not authorized");
+
+        // Adjust balance only if amount is being changed
+        if (itemDTO.Amount.HasValue && itemDTO.Amount.Value != updateItem.Amount)
         {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            if (userId == null) return Unauthorized();
+            user.Balance += updateItem.Amount; // refund old
+            if (user.Balance < itemDTO.Amount.Value)
+                return BadRequest("Insufficient balance");
 
-            var user = await _context.Users.FindAsync(userId);
-            if (user == null) return BadRequest("User not found");
+            user.Balance -= itemDTO.Amount.Value;
+            updateItem.BalanceAfter = user.Balance;
+            updateItem.Amount = itemDTO.Amount.Value;
 
-            var updateItem = await _context.Expenses.FindAsync(id);
-            if (updateItem == null || updateItem.UserId != userId)
-                return BadRequest("Expense not found or not authorized");
-
-            var category = await _context.Category
-                .FirstOrDefaultAsync(e => e.CategoryName == itemDTO.CategoryName);
-
-            if (category == null)
-                return NotFound("Category not found");
-
-            // Refund old amount
-            user.Balance += updateItem.Amount;
-
-
-
-            // Check if enough balance to deduct new amount
-            if (user.Balance < itemDTO.Amount)
+            if (updateItem.Transaction != null)
             {
-                _context.Users.Update(user);
-                return BadRequest("Insufficient balance for update");
+                updateItem.Transaction.Amount = itemDTO.Amount.Value;
+                updateItem.Transaction.Balance = user.Balance;
             }
 
-            user.Balance -= itemDTO.Amount;
-
-
-          
             _context.Users.Update(user);
-
-
-
-            updateItem.Title = itemDTO.Title;
-            updateItem.Description = itemDTO.Description;
-            updateItem.Amount = itemDTO.Amount;
-            //updateItem.CategoryId = category.Id;
-            updateItem.Date = itemDTO.Date;
-            updateItem.UpdatedAt = DateTime.Now;
-            updateItem.BalanceAfter = user.Balance;
-
-
-
-            var updatetransactions = await _context.Transactions.FindAsync(updateItem.TransactionId);
-            if (updatetransactions == null) return BadRequest();
-            updatetransactions.Title = itemDTO.Title;
-            updatetransactions.Description = itemDTO.Description;
-            updatetransactions.Amount = itemDTO.Amount;
-            updatetransactions.Date = itemDTO.Date;
-            updatetransactions.Balance = user.Balance;
-
-
-            await _context.SaveChangesAsync();
-            return Ok(updateItem);
         }
+
+        if (!string.IsNullOrWhiteSpace(itemDTO.Title))
+        {
+            updateItem.Title = itemDTO.Title;
+            if (updateItem.Transaction != null)
+                updateItem.Transaction.Title = itemDTO.Title;
+        }
+
+        if (!string.IsNullOrWhiteSpace(itemDTO.Description))
+        {
+            updateItem.Description = itemDTO.Description;
+            if (updateItem.Transaction != null)
+                updateItem.Transaction.Description = itemDTO.Description;
+        }
+
+        if (itemDTO.Date.HasValue)
+        {
+            updateItem.Date = itemDTO.Date.Value;
+            if (updateItem.Transaction != null)
+                updateItem.Transaction.Date = itemDTO.Date.Value;
+        }
+
+        if (!string.IsNullOrWhiteSpace(itemDTO.CategoryName))
+        {
+            var category = await _context.Category
+                .FirstOrDefaultAsync(c => c.CategoryName == itemDTO.CategoryName);
+            if (category == null) return NotFound("Category not found");
+
+            updateItem.CategoryId = category.Id;
+            updateItem.CategoryName = category.CategoryName;
+        }
+
+        updateItem.UpdatedAt = DateTime.Now;
+
+        await _context.SaveChangesAsync();
+        return Ok("Expense updated successfully.");
+    }
+    catch (Exception ex)
+    {
+        return StatusCode(500, $"Internal error: {ex.Message}");
+    }
+}
+
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteItem(int id)
         {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            if (userId == null) return Unauthorized();
+            try
+            {
+                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                if (userId == null) return Unauthorized();
 
-            var user = await _context.Users.FindAsync(userId);
-            if (user == null) return BadRequest("User not found");
+                var user = await _context.Users.FindAsync(userId);
+                if (user == null) return BadRequest("User not found");
 
-            var deleteItem = await _context.Expenses.FindAsync(id);
-            if (deleteItem == null || deleteItem.UserId != userId)
-                return BadRequest("Item not found or not authorized");
+                var deleteItem = await _context.Expenses
+                    .Include(e => e.Transaction)
+                    .FirstOrDefaultAsync(e => e.ExpenseId == id);
 
-            user.Balance += deleteItem.Amount;
-            _context.Users.Update(user);
+                if (deleteItem == null || deleteItem.UserId != userId)
+                    return BadRequest("Item not found or not authorized");
 
+                user.Balance += deleteItem.Amount;
+                _context.Users.Update(user);
 
-            var deleteTransaction = await _context.Transactions.FindAsync(deleteItem.TransactionId);
-            if (deleteTransaction == null) return BadRequest();
-            _context.Transactions.Remove(deleteTransaction);
-           
+                //if (deleteItem.Transaction != null)
+                //    _context.Transactions.Remove(deleteItem.Transaction);
 
-            _context.Expenses.Remove(deleteItem);
-            await _context.SaveChangesAsync();
+                _context.Expenses.Remove(deleteItem);
+                await _context.SaveChangesAsync();
 
-            return Ok($"Item '{deleteItem.Title}' with ID {id} deleted and balance updated.");
+                return Ok($"Item '{deleteItem.Title}' with ID {id} deleted and balance updated.");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal error: {ex.Message}");
+            }
         }
 
-    
+
+
 
 
     }

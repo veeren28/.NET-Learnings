@@ -11,6 +11,8 @@ namespace ExpensesTracker.Models
         [Required]
         [Column(TypeName = "decimal(18,2)")]
         public decimal Amount { get; set; }
+        [Required]
+        public string Type { get; set; }
 
         [Required]
         public string Title { get; set; }
@@ -30,7 +32,7 @@ namespace ExpensesTracker.Models
         public UserApplication Username { get; set; }
 
         // These will establish one-to-one relationships
-        //public IncomeModel? Income { get; set; }
-        //public ExpensesModel? Expenses { get; set; }
+        public IncomeModel? Income { get; set; }
+        public ExpensesModel? Expenses { get; set; }
     }
 }

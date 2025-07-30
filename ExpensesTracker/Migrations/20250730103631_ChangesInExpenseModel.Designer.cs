@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ExpensesTracker.Migrations
 {
     [DbContext(typeof(AppContextDb))]
-    [Migration("20250729175012_finalAppContextDbsss")]
-    partial class finalAppContextDbsss
+    [Migration("20250730103631_ChangesInExpenseModel")]
+    partial class ChangesInExpenseModel
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -111,6 +111,10 @@ namespace ExpensesTracker.Migrations
                     b.Property<int>("CategoryId")
                         .HasColumnType("int");
 
+                    b.Property<string>("CategoryName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("Date")
                         .HasMaxLength(100)
                         .HasColumnType("datetime2");
@@ -134,6 +138,10 @@ namespace ExpensesTracker.Migrations
                     b.Property<string>("UserId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("UserName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ExpenseId");
 
@@ -215,6 +223,10 @@ namespace ExpensesTracker.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Type")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -440,7 +452,7 @@ namespace ExpensesTracker.Migrations
                         .IsRequired();
 
                     b.HasOne("ExpensesTracker.Models.TransactionModel", "Transaction")
-                        .WithOne()
+                        .WithOne("Expenses")
                         .HasForeignKey("ExpensesTracker.Models.ExpensesModel", "TransactionId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
@@ -461,7 +473,7 @@ namespace ExpensesTracker.Migrations
             modelBuilder.Entity("ExpensesTracker.Models.IncomeModel", b =>
                 {
                     b.HasOne("ExpensesTracker.Models.TransactionModel", "Transaction")
-                        .WithOne()
+                        .WithOne("Income")
                         .HasForeignKey("ExpensesTracker.Models.IncomeModel", "TransactionId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
@@ -542,6 +554,13 @@ namespace ExpensesTracker.Migrations
             modelBuilder.Entity("ExpensesTracker.Models.CategoryModel", b =>
                 {
                     b.Navigation("Expenses");
+                });
+
+            modelBuilder.Entity("ExpensesTracker.Models.TransactionModel", b =>
+                {
+                    b.Navigation("Expenses");
+
+                    b.Navigation("Income");
                 });
 #pragma warning restore 612, 618
         }

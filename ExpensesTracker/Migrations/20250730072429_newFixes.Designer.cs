@@ -4,6 +4,7 @@ using ExpensesTracker.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ExpensesTracker.Migrations
 {
     [DbContext(typeof(AppContextDb))]
-    partial class AppContextDbModelSnapshot : ModelSnapshot
+    [Migration("20250730072429_newFixes")]
+    partial class newFixes
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -126,7 +129,7 @@ namespace ExpensesTracker.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<int?>("TransactionId")
+                    b.Property<int>("TransactionId")
                         .HasColumnType("int");
 
                     b.Property<DateTime?>("UpdatedAt")
@@ -136,17 +139,12 @@ namespace ExpensesTracker.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("UserName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("ExpenseId");
 
                     b.HasIndex("CategoryId");
 
                     b.HasIndex("TransactionId")
-                        .IsUnique()
-                        .HasFilter("[TransactionId] IS NOT NULL");
+                        .IsUnique();
 
                     b.HasIndex("UserId");
 
@@ -452,7 +450,8 @@ namespace ExpensesTracker.Migrations
                     b.HasOne("ExpensesTracker.Models.TransactionModel", "Transaction")
                         .WithOne("Expenses")
                         .HasForeignKey("ExpensesTracker.Models.ExpensesModel", "TransactionId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
 
                     b.HasOne("ExpensesTracker.Models.UserApplication", "User")
                         .WithMany()

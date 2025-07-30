@@ -48,22 +48,22 @@ namespace ExpensesTracker.Data
                 .HasForeignKey(e => e.UserId)
                 .OnDelete(DeleteBehavior.Restrict); // Prevents deleting user if they have expenses
 
-            // Income ↔ Transaction: One-to-One with Cascade Delete
+            // Income ↔ Transaction: 
             builder.Entity<IncomeModel>()
                 .HasOne(i => i.Transaction)
-                .WithOne()
+                .WithOne(i=>i.Income)
                 .HasForeignKey<IncomeModel>(i => i.TransactionId)
-                .OnDelete(DeleteBehavior.NoAction); // Deleting income deletes related transaction
+                .OnDelete(DeleteBehavior.NoAction); 
 
-            // Expenses ↔ Transaction: One-to-One with Cascade Delete
+            // Expenses ↔ Transaction: 
             builder.Entity<ExpensesModel>()
                 .HasOne(e => e.Transaction)
-                .WithOne()
+                .WithOne(i=>i.Expenses)
                 .HasForeignKey<ExpensesModel>(e => e.TransactionId)
-                .OnDelete(DeleteBehavior.NoAction); // Deleting expense deletes related transaction
+                .OnDelete(DeleteBehavior.Cascade);
 
-
-            //Expense to Category
+         
+      
 
            
         }

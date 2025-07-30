@@ -12,6 +12,8 @@ namespace ExpensesTracker.Models
 
         [Required]
         public string? UserId { get; set; }
+        [Required]
+        public string UserName { get; set; }
 
         [ForeignKey("UserId")]
         public UserApplication User { get; set; } // Or rename to `User` or `Owner`
@@ -49,9 +51,11 @@ namespace ExpensesTracker.Models
         public int CategoryId { get; set; }
         //[ForeignKey("CategoryId")]
         public CategoryModel Category { get; set; }
+
+        [Required]public string CategoryName { get; set; }
         //Navigation
 
-        public int TransactionId { get; set; }
+        public int? TransactionId { get; set; }
         public TransactionModel Transaction { get; set; }
     }
 }

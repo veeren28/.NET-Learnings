@@ -122,9 +122,9 @@
   },
   {
     "ContainingType": "ExpensesTracker.Controllers.ExpenseController",
-    "Method": "UpdateItem",
+    "Method": "PatchItem",
     "RelativePath": "api/Expense/{id}",
-    "HttpMethod": "PUT",
+    "HttpMethod": "PATCH",
     "IsController": true,
     "Order": 0,
     "Parameters": [
@@ -185,9 +185,9 @@
   },
   {
     "ContainingType": "ExpensesTracker.Controllers.IncomeController",
-    "Method": "UpdateIncome",
+    "Method": "PatchIncome",
     "RelativePath": "api/Income/{id}",
-    "HttpMethod": "PUT",
+    "HttpMethod": "PATCH",
     "IsController": true,
     "Order": 0,
     "Parameters": [
@@ -197,7 +197,7 @@
         "IsRequired": true
       },
       {
-        "Name": "incomeDTO",
+        "Name": "dto",
         "Type": "ExpensesTracker.DTOs.UpdateIncomeDTO",
         "IsRequired": true
       }
@@ -218,6 +218,16 @@
         "IsRequired": true
       }
     ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ExpensesTracker.Controllers.TransactionController",
+    "Method": "Get",
+    "RelativePath": "api/Transaction",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
     "ReturnTypes": []
   }
 ]
