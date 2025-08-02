@@ -1,11 +1,11 @@
 <div class="flex-1 w-full h-full flex bg-[#EEEEEE] p-4 flex-col space-y-4">
   <!-- heading -->
   <div>
-    <h1 class="text-3xl ml-4 my-6 text-black font-bold">Dashboard</h1>
+    <h1 class="text-3xl ml-4 my-3 text-black font-bold">Dashboard</h1>
   </div>
 
   <!-- income, expenses, balance boxes -->
-  <div class="w-full flex flex-wrap md:flex-nowrap gap-6 p-4">
+  <div class="w-full flex flex-wrap md:flex-nowrap gap-6 pt-2 p-4">
     <!-- Income Box -->
     <div class="flex-1 min-w-[278px] h-[112px] rounded-md bg-white p-4 shadow">
       <h1 class="text-sm font-semibold text-gray-400">Total Income</h1>
@@ -25,14 +25,79 @@
     </div>
   </div>
 
-  <!-- recent Transactions: -->
-  <div class="w-full min-h-[300px] bg-red-500 rounded-md p-4">
+  <!-- Recent Transactions Card -->
+  <div
+    class="w-full flex-1 bg-white rounded-md p-4 flex flex-col overflow-y-auto"
+  >
+    <!-- Headline -->
+    <h2 class="text-xl font-bold text-gray-800 mb-4 ml-2">
+      Recent Transactions
+    </h2>
+
+    <!-- Filters -->
     <div
-      class="flex-1 min-w-[200px] flex flex-row flex-wrap md:flex-nowrap gap-6"
+      class="flex flex-row flex-wrap md:flex-nowrap justify-center gap-6 mb-4"
     >
-      <div>Category:<input class="rounded-md bg-white" /></div>
-      <div>Start Date:<input class="rounded-md bg-white" /></div>
-      <div>End Date:<input class="rounded-md bg-white" /></div>
+      <!-- Category Filter -->
+      <div class="flex flex-col">
+        <label class="font-semibold text-sm text-gray-600 mb-1">Category</label>
+        <input
+          class="rounded-md bg-gray-100 p-2 border border-gray-300"
+          placeholder="Enter category"
+        />
+      </div>
+
+      <!-- Start Date -->
+      <div class="flex flex-col">
+        <label class="font-semibold text-sm text-gray-600 mb-1"
+          >Start Date</label
+        >
+        <input
+          type="date"
+          class="rounded-md bg-gray-100 p-2 border border-gray-300"
+        />
+      </div>
+
+      <!-- End Date -->
+      <div class="flex flex-col">
+        <label class="font-semibold text-sm text-gray-600 mb-1">End Date</label>
+        <input
+          type="date"
+          class="rounded-md bg-gray-100 p-2 border border-gray-300"
+        />
+      </div>
+
+      <!-- Min Price -->
+      <div class="flex flex-col">
+        <label class="font-semibold text-sm text-gray-600 mb-1"
+          >Min Price</label
+        >
+        <input
+          type="number"
+          class="rounded-md bg-gray-100 p-2 border border-gray-300"
+          placeholder="₹"
+        />
+      </div>
+
+      <!-- Max Price -->
+      <div class="flex flex-col">
+        <label class="font-semibold text-sm text-gray-600 mb-1"
+          >Max Price</label
+        >
+        <input
+          type="number"
+          class="rounded-md bg-gray-100 p-2 border border-gray-300"
+          placeholder="₹"
+        />
+      </div>
+    </div>
+
+    <!-- Transaction List -->
+    <div class="flex-1 overflow-y-auto flex flex-col gap-2 pr-1">
+      <app-trasnsaction-card></app-trasnsaction-card>
+      <app-trasnsaction-card></app-trasnsaction-card>
+      <app-trasnsaction-card></app-trasnsaction-card>
+      <app-trasnsaction-card></app-trasnsaction-card>
     </div>
   </div>
 </div>

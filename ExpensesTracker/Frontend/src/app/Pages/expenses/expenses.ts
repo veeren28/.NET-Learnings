@@ -1,11 +1,9 @@
 import { Component } from '@angular/core';
-
+import { TrasnsactionCard } from '../../Components/trasnaction-card/trasnsaction-card';
 @Component({
   selector: 'app-expenses',
-  imports: [],
+  imports: [TrasnsactionCard],
   templateUrl: './expenses.html',
-  styleUrl: './expenses.css'
+  styleUrl: './expenses.css',
 })
-export class Expenses {
-
-}
+export class Expenses {}
