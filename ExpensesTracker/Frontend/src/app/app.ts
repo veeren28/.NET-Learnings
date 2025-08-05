@@ -1,13 +1,13 @@
+// app.ts
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
-import { Dashboard } from './Pages/dashboard/dashboard';
-import { SideBar } from './Components/side-bar/side-bar';
-import { RouterModule } from '@angular/router';
+import { RouterOutlet, RouterModule } from '@angular/router';
 import { routes } from './app.routes';
+import { SideBar } from './Components/side-bar/side-bar';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, Dashboard, SideBar, RouterModule],
+  standalone: true,
+  imports: [RouterOutlet, SideBar],
   templateUrl: './app.html',
   styleUrl: './app.css',
 })

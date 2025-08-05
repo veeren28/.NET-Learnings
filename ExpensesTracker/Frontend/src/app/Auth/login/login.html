@@ -1,0 +1,72 @@
+<div
+  class="w-screen h-screen bg-slate-100 flex justify-center items-center p-4"
+>
+  <div class="bg-white p-8 rounded-lg shadow-xl w-full max-w-sm">
+    <h2 class="text-2xl font-bold text-center mb-6">Login</h2>
+    <form [formGroup]="loginForm" (ngSubmit)="OnLogin()" class="space-y-4">
+      <div>
+        <label for="email" class="block text-sm font-medium text-gray-700"
+          >Email</label
+        >
+        <input
+          id="email"
+          type="email"
+          formControlName="Email"
+          class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-purple-500 focus:border-purple-500"
+        />
+        <div *ngIf="Email && Email.touched && Email.errors" class="mt-1">
+          <small *ngIf="Email.errors['required']" class="text-xs text-red-500"
+            >Email is required.</small
+          >
+          <small *ngIf="Email.errors['email']" class="text-xs text-red-500"
+            >Invalid email format.</small
+          >
+        </div>
+      </div>
+
+      <div>
+        <label for="password" class="block text-sm font-medium text-gray-700"
+          >Password</label
+        >
+        <input
+          id="password"
+          type="password"
+          formControlName="Password"
+          class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-purple-500 focus:border-purple-500"
+        />
+        <div
+          *ngIf="Password && Password.touched && Password.errors"
+          class="mt-1"
+        >
+          <small
+            *ngIf="Password.errors['required']"
+            class="text-xs text-red-500"
+            >Password is required.</small
+          >
+          <small
+            *ngIf="Password.errors['minlength']"
+            class="text-xs text-red-500"
+          >
+            Password must be at least 6 characters.
+          </small>
+        </div>
+      </div>
+
+      <button
+        type="submit"
+        class="w-full mt-6 py-2 px-4 bg-purple-600 text-white font-semibold rounded-md shadow-md hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500"
+      >
+        Login
+      </button>
+    </form>
+    <!-- register user  -->
+    <div
+      class="text-sm flex flex-col space-y-2 mt-3 items-center justify-center flex-1 h-full w-full"
+    >
+      <h1>Dont have an account ?</h1>
+      <a routerLink="/RegisterUser" class="text-blue-600 cursor-pointer"
+        >Register an Account</a
+      >
+    </div>
+  </div>
+</div>
