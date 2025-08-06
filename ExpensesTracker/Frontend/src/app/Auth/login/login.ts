@@ -11,9 +11,10 @@ import {
 import { AuthService } from '../../auth-service';
 import { CommonModule } from '@angular/common';
 import { errorContext } from 'rxjs/internal/util/errorContext';
+import { RouterLink } from '@angular/router';
 @Component({
   selector: 'app-login',
-  imports: [CommonModule, ReactiveFormsModule, FormsModule],
+  imports: [CommonModule, ReactiveFormsModule, FormsModule, RouterLink],
   templateUrl: './login.html',
   styleUrl: './login.css',
 })
