@@ -22,7 +22,7 @@ import {
 } from '@angular/forms';
 import { AuthService } from '../../auth-service';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-register',
@@ -35,7 +35,7 @@ export class Register {
   formErrors: string[] = [];
   successMessage = ' ';
 
-  constructor(private registeruser: AuthService) {}
+  constructor(private registeruser: AuthService, private router: Router) {}
 
   ngOnInit() {
     this.RegisterForm = new FormGroup(
@@ -43,7 +43,7 @@ export class Register {
         Email: new FormControl('', [Validators.required, Validators.email]),
         Username: new FormControl('', [
           Validators.required,
-          Validators.minLength(8),
+          Validators.minLength(5),
         ]),
         Balance: new FormControl('', [
           Validators.required,
@@ -114,10 +114,15 @@ export class Register {
         console.log('✅ Success response from backend:', res);
         this.successMessage =
           res.message || res.description || 'Registered successfully!';
+        window.alert(this.successMessage);
+        setTimeout(() => {
+          this.router.navigate(['/Login']);
+        }, 1500);
         this.RegisterForm.reset();
       },
       error: (err) => {
-        console.log('❌ Error response from backend:', err);
+        console.log('Error Object:', JSON.stringify(err, null, 2));
+        // window.alert(err.errors.error);
       },
     });
   }

@@ -11,7 +11,7 @@ import {
 import { AuthService } from '../../auth-service';
 import { CommonModule } from '@angular/common';
 import { errorContext } from 'rxjs/internal/util/errorContext';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 @Component({
   selector: 'app-login',
   imports: [CommonModule, ReactiveFormsModule, FormsModule, RouterLink],
@@ -20,7 +20,9 @@ import { RouterLink } from '@angular/router';
 })
 export class Login {
   loginForm!: FormGroup;
-  constructor(private authService: AuthService) {}
+
+  constructor(private authService: AuthService, private route: Router) {}
+
   ngOnInit() {
     this.loginForm = new FormGroup({
       Email: new FormControl('', [Validators.required, Validators.email]),
@@ -30,7 +32,6 @@ export class Login {
       ]),
     });
   }
-  // getter functions for Email and password in fromgruoup
 
   get Email() {
     return this.loginForm.get('Email');
@@ -41,18 +42,27 @@ export class Login {
   }
 
   OnLogin(): void {
-    if (this.loginForm.value.invalid) {
+    this.loginForm.markAllAsTouched();
+
+    if (this.loginForm.invalid) {
       console.log('Form is Invalid');
       return;
     }
+
     this.authService.Login(this.loginForm.value).subscribe({
       next: (res: any) => {
-        console.log('Token added succesfully');
-        localStorage.setItem('token', res);
-        console.log(res);
+        console.log('✅ Login successful:', res);
+        localStorage.setItem('token', res.token); // <-- Important
+        window.alert('Logged in successfully');
+        this.route.navigate(['/Dashboard']);
       },
       error: (err) => {
-        console.log('Login Failed' + err);
+        console.log('❌ Login failed:', err);
+        if (err.error && err.error.message) {
+          window.alert(err.error.message);
+        } else {
+          window.alert('Login failed. Please try again.');
+        }
       },
     });
   }
