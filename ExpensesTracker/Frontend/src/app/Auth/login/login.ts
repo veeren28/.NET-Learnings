@@ -61,7 +61,7 @@ export class Login {
         if (err.error && err.error.message) {
           window.alert(err.error.message);
         } else {
-          window.alert('Login failed. Please try again.');
+          window.alert(`Login Failed ${err}`);
         }
       },
     });
