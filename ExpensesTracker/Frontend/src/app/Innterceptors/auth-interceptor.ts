@@ -1,39 +1,40 @@
-import {
-  HTTP_INTERCEPTORS,
-  HttpEventType,
-  HttpHandler,
-  HttpInterceptorFn,
-  HttpRequest,
-} from '@angular/common/http';
-import { inject } from '@angular/core'; // ✅ Correct casing: 'inject', not 'Inject'
+import { HttpInterceptorFn } from '@angular/common/http';
+import { inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { EMPTY } from 'rxjs';
 
-// Functional interceptor (Angular 15+ style)
-// This runs for every outgoing HTTP request in the app
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
-  // ✅ Functional interceptors don't have constructors, so we use 'inject()'
-  const router = inject(Router);
+  console.log('Interceptor hit for URL:', req.url);
 
-  // Fetch the stored token (JWT or similar) from local storage
+  const router = inject(Router);
   const token = localStorage.getItem('token');
 
-  // If token is missing, block or redirect
-  if (!token) {
-    window.alert('Unauthorized to access this feature'); // Show alert to user
-    router.navigate(['/Invalid']); // Redirect to 'Invalid' page
+  // URLs that don’t need authentication
+  const publicUrls = ['/api/auth/login', '/api/auth/register'];
+
+  // Skip adding token if request is public
+  if (publicUrls.some((url) => req.url.includes(url))) {
     return next(req);
-    // ⚠ Currently still sending the request without token —
-    // could replace with EMPTY to fully block request
   }
 
-  // Clone the original request and attach Authorization header
+  // If token is missing → block request
+  if (!token) {
+    window.alert('Unauthorized to access this feature');
+    router.navigate(['/Invalid']);
+    return EMPTY; // Stop request
+  }
+
+  // If token exists → attach it to request
   const clone = req.clone({
     setHeaders: {
-      Authorization: `Bearer ${token}`, // Append Bearer token
+      Authorization: `Bearer ${token}`,
     },
   });
+  console.log('Intercepting:', req.url, 'Token:', token);
 
-  // Pass the modified request down the chain
   return next(clone);
+};
+export const testInterceptor: HttpInterceptorFn = (req, next) => {
+  console.log('🚀 Test interceptor is running for URL:', req.url);
+  return next(req);
 };

@@ -20,7 +20,7 @@ import {
   FormsModule,
   Validators,
 } from '@angular/forms';
-import { AuthService } from '../../auth-service';
+import { AuthService } from '../../services/auth-service';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 

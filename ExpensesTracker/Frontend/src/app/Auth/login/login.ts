@@ -8,7 +8,7 @@ import {
   FormBuilder,
   FormsModule,
 } from '@angular/forms';
-import { AuthService } from '../../auth-service';
+import { AuthService } from '../../services/auth-service';
 import { CommonModule } from '@angular/common';
 import { errorContext } from 'rxjs/internal/util/errorContext';
 import { Router, RouterLink } from '@angular/router';
@@ -54,7 +54,7 @@ export class Login {
         console.log('✅ Login successful:', res);
         localStorage.setItem('token', res.token); // <-- Important
         window.alert('Logged in successfully');
-        this.route.navigate(['/Dashboard']);
+        this.route.navigate(['/home']);
       },
       error: (err) => {
         console.log('❌ Login failed:', err);

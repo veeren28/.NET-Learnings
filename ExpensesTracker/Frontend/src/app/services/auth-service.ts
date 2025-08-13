@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { routes } from './app.routes';
+import { routes } from '../app.routes';
 import { Route, Routes } from '@angular/router';
 
 @Injectable({
@@ -15,5 +15,8 @@ export class AuthService {
   }
   Register(user: any) {
     return this.http.post(`${this.baseURL}/Register`, user);
+  }
+  Logout(): void {
+    localStorage.removeItem('token');
   }
 }
