@@ -10,7 +10,7 @@ import { FormsModule } from '@angular/forms';
 })
 export class Expenses {
   constructor(private service: ExpenseService) {}
-  transactions!: any;
+  expenses: any[] = [];
   filters = {
     categoryName: '',
     startdate: '',
@@ -23,10 +23,13 @@ export class Expenses {
     this.loadExpenses();
   }
   loadExpenses() {
-    console.log('Calling GetExpenses...');
     this.service.GetExpenses(this.filters).subscribe((data: any) => {
-      console.log('Got expenses:', data);
-      this.transactions = data;
+      this.expenses = data;
+
+      console.log('checking expenses');
+      for (let i = 0; i < this.expenses.length; i++) {
+        console.log(this.expenses[i].title); // should return each row
+      }
     });
   }
   applyFilters() {

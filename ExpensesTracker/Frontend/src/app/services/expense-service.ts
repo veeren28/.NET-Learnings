@@ -6,7 +6,7 @@ import { Injectable } from '@angular/core';
 })
 export class ExpenseService {
   constructor(private http: HttpClient) {}
-  private baseUrl = 'http://localhost:5000/api/Expense';
+  private baseUrl = 'https://localhost:5000/api/Expense';
   GetExpenses(filters: any = {}) {
     const params = new HttpParams({ fromObject: filters });
     return this.http.get(`${this.baseUrl}`, { params });

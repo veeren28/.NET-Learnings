@@ -13,7 +13,13 @@
           class="flex-1 min-w-[278px] h-[112px] rounded-md bg-white p-4 shadow"
         >
           <h1 class="text-sm font-semibold text-gray-400">Total Income</h1>
-          <h1 class="text-2xl font-bold text-green-600 mt-2">₹4,250.00</h1>
+
+          <h1 class="text-2xl font-bold text-green-600 mt-2">
+            {{totalIncome}}
+          </h1>
+          <!-- <h1 class="text-2xl font-bold text-green-600 mt-2">
+            {{summary.totalIncome}}
+          </h1> -->
         </div>
 
         <!-- Expenses Box -->
@@ -21,7 +27,10 @@
           class="flex-1 min-w-[278px] h-[112px] rounded-md bg-white p-4 shadow"
         >
           <h1 class="text-sm font-semibold text-gray-400">Total Expenses</h1>
-          <h1 class="text-2xl font-bold text-red-500 mt-2">₹2,180.00</h1>
+          <h1 class="text-2xl font-bold text-red-500 mt-2">{{totalExpense}}</h1>
+          <!-- <h1 class="text-2xl font-bold text-red-500 mt-2">
+            {{summary.totalExpense}}
+          </h1> -->
         </div>
 
         <!-- Balance Box -->
@@ -29,7 +38,8 @@
           class="flex-1 min-w-[278px] h-[112px] rounded-md bg-white p-4 shadow"
         >
           <h1 class="text-sm font-semibold text-gray-400">Balance</h1>
-          <h1 class="text-2xl font-bold text-purple-600 mt-2">₹2,070.00</h1>
+          <h1 class="text-2xl font-bold text-purple-600 mt-2">{{Balance}}</h1>
+          <!-- <h1 class="text-2xl font-bold text-purple-600 mt-2">{{summary.Balance}}</h1> -->
         </div>
       </div>
 
@@ -42,65 +52,77 @@
           Recent Transactions
         </h2>
 
-        <!-- Filters -->
-        <div
-          class="flex flex-row flex-wrap md:flex-nowrap justify-center gap-6 mb-4"
-        >
-          <!-- Category Filter -->
-          <div class="flex flex-col">
-            <label class="font-semibold text-sm text-gray-600 mb-1"
-              >Category</label
-            >
-            <input
-              class="rounded-md bg-gray-100 p-2 border border-gray-300"
-              placeholder="Enter category"
-            />
-          </div>
+        <!-- Filters container -->
+        <div class="flex flex-col space-y-1">
+          <div
+            class="flex flex-row flex-wrap md:flex-nowrap justify-center gap-6 mb-4"
+          >
+            <!-- Category Filter -->
+            <div class="flex flex-col">
+              <label class="font-semibold text-sm text-gray-600 mb-1"
+                >Category</label
+              >
+              <input
+                class="rounded-md bg-gray-100 p-2 border border-gray-300"
+                placeholder="Enter category"
+              />
+            </div>
 
-          <!-- Start Date -->
-          <div class="flex flex-col">
-            <label class="font-semibold text-sm text-gray-600 mb-1"
-              >Start Date</label
-            >
-            <input
-              type="date"
-              class="rounded-md bg-gray-100 p-2 border border-gray-300"
-            />
-          </div>
+            <!-- Start Date -->
+            <div class="flex flex-col">
+              <label class="font-semibold text-sm text-gray-600 mb-1"
+                >Start Date</label
+              >
+              <input
+                type="date"
+                class="rounded-md bg-gray-100 p-2 border border-gray-300"
+              />
+            </div>
 
-          <!-- End Date -->
-          <div class="flex flex-col">
-            <label class="font-semibold text-sm text-gray-600 mb-1"
-              >End Date</label
-            >
-            <input
-              type="date"
-              class="rounded-md bg-gray-100 p-2 border border-gray-300"
-            />
-          </div>
+            <!-- End Date -->
+            <div class="flex flex-col">
+              <label class="font-semibold text-sm text-gray-600 mb-1"
+                >End Date</label
+              >
+              <input
+                type="date"
+                class="rounded-md bg-gray-100 p-2 border border-gray-300"
+              />
+            </div>
 
-          <!-- Min Price -->
-          <div class="flex flex-col">
-            <label class="font-semibold text-sm text-gray-600 mb-1"
-              >Min Price</label
-            >
-            <input
-              type="number"
-              class="rounded-md bg-gray-100 p-2 border border-gray-300"
-              placeholder="₹"
-            />
-          </div>
+            <!-- Min Price -->
+            <div class="flex flex-col">
+              <label class="font-semibold text-sm text-gray-600 mb-1"
+                >Min Price</label
+              >
+              <input
+                type="number"
+                class="rounded-md bg-gray-100 p-2 border border-gray-300"
+                placeholder="₹"
+              />
+            </div>
 
-          <!-- Max Price -->
-          <div class="flex flex-col">
-            <label class="font-semibold text-sm text-gray-600 mb-1"
-              >Max Price</label
-            >
+            <!-- Max Price -->
+            <div class="flex flex-col">
+              <label class="font-semibold text-sm text-gray-600 mb-1"
+                >Max Price</label
+              >
+              <input
+                type="number"
+                class="rounded-md bg-gray-100 p-2 border border-gray-300"
+                placeholder="₹"
+              />
+            </div>
+          </div>
+          <!-- search and apply button -->
+          <div class="flex flex-row w-full justify-center">
             <input
-              type="number"
-              class="rounded-md bg-gray-100 p-2 border border-gray-300"
-              placeholder="₹"
+              type="text"
+              placeholder="Search Item "
+              class="bg-gray-100 border border-gray-300"
             />
+
+            <button class="pl-4">Apply</button>
           </div>
         </div>
 
@@ -108,10 +130,12 @@
         <div
           class="flex-1 overflow-y-scroll max-h-[250px] flex flex-col gap-2 pr-1"
         >
-          <app-trasnsaction-card></app-trasnsaction-card>
-          <app-trasnsaction-card></app-trasnsaction-card>
-          <app-trasnsaction-card></app-trasnsaction-card>
-          <app-trasnsaction-card></app-trasnsaction-card>
+          @for(m of transactions ; track m){
+          <app-trasnsaction-card [transactions]="m"></app-trasnsaction-card>
+          }
+          <!-- @for (m of transactions; track m.id) {
+          <app-trasnsaction-card [transactions]="m"></app-trasnsaction-card>
+          } -->
         </div>
       </div>
     </div>

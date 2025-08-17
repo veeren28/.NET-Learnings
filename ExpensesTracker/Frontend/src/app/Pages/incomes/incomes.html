@@ -1,13 +1,12 @@
-<div class="flex-1 w-full h-full">
-  <div class="flex-1 w-full h-full flex justify-center bg-[#EEEEEE]">
-    <div class="w-full h-[420px] bg-[#EEEEEE] p-4 flex flex-col">
-      <!-- Headline -->
-      <h2 class="text-xl font-bold text-gray-800 mb-4 ml-2">Income List</h2>
+<div class="flex-1 w-full h-full flex justify-center bg-[#EEEEEE]">
+  <div class="w-full h-[420px] bg-[#EEEEEE] p-4 flex flex-col">
+    <!-- Headline -->
+    <h2 class="text-xl font-bold text-gray-800 mb-4 ml-2">Incomes List</h2>
 
-      <!-- Filters -->
-      <div
-        class="flex flex-row flex-wrap md:flex-nowrap justify-center gap-6 mb-4"
-      >
+    <!-- Container -->
+    <div class="flex flex-col gap-4 mb-4">
+      <!-- First row: filters -->
+      <div class="flex flex-wrap md:flex-nowrap gap-4">
         <!-- Category Filter -->
         <div class="flex flex-col">
           <label class="font-semibold text-sm text-gray-600 mb-1"
@@ -16,6 +15,7 @@
           <input
             class="rounded-md bg-gray-100 p-2 border border-gray-300"
             placeholder="Enter category"
+            [(ngModel)]="filters.categoryName"
           />
         </div>
 
@@ -27,6 +27,7 @@
           <input
             type="date"
             class="rounded-md bg-gray-100 p-2 border border-gray-300"
+            [(ngModel)]="filters.startdate"
           />
         </div>
 
@@ -38,6 +39,7 @@
           <input
             type="date"
             class="rounded-md bg-gray-100 p-2 border border-gray-300"
+            [(ngModel)]="filters.endDate"
           />
         </div>
 
@@ -50,6 +52,7 @@
             type="number"
             class="rounded-md bg-gray-100 p-2 border border-gray-300"
             placeholder="₹"
+            [(ngModel)]="filters.minAmount"
           />
         </div>
 
@@ -62,15 +65,39 @@
             type="number"
             class="rounded-md bg-gray-100 p-2 border border-gray-300"
             placeholder="₹"
+            [(ngModel)]="filters.maxAmount"
           />
         </div>
       </div>
 
+      <!-- Second row: search & apply -->
+      <div class="flex flex-wrap md:flex-nowrap gap-4">
+        <!-- Search -->
+        <div class="flex flex-col flex-grow">
+          <label class="font-semibold text-sm text-gray-600 mb-1">Search</label>
+          <input
+            type="text"
+            placeholder="Enter item name"
+            class="rounded-md bg-gray-100 p-2 border border-gray-300"
+            [(ngModel)]="filters.search"
+          />
+        </div>
+
+        <!-- Apply Button -->
+        <div class="flex items-end">
+          <button
+            (click)="applyFilters()"
+            class="bg-blue-500 text-white px-4 py-2 rounded-md"
+          >
+            Apply
+          </button>
+        </div>
+      </div>
+
       <!-- Transaction List -->
-      <div class="flex-1 overflow-y-auto flex flex-col gap-2 pr-1">
-        <app-trasnsaction-card></app-trasnsaction-card>
-        <app-trasnsaction-card></app-trasnsaction-card>
-        <app-trasnsaction-card></app-trasnsaction-card>
+      <div
+        class="flex-1 overflow-y-scroll max-h-[250px] flex flex-col gap-2 pr-1"
+      >
         <app-trasnsaction-card></app-trasnsaction-card>
       </div>
     </div>

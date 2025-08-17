@@ -8,19 +8,23 @@
 
   <!-- Title + Category -->
   <div class="flex flex-col">
-    <h1 class="font-semibold text-black text-base">Burger</h1>
-    <h2 class="font-medium text-gray-500 text-sm">Food</h2>
+    <h1 class="font-semibold text-black text-base">{{transactions.title}}</h1>
+    <h2 class="font-medium text-gray-500 text-sm">
+      {{transactions.categoryName}}
+    </h2>
   </div>
 
   <!-- Description -->
   <div class="flex-1">
-    <h2 class="text-gray-700 text-sm">I Love Burgers</h2>
+    <h2 class="text-gray-700 text-sm">{{transactions.description}}</h2>
   </div>
 
   <!-- Amount + Date -->
   <div class="text-right">
-    <h1 class="font-bold text-lg text-green-600">₹91</h1>
-    <h2 class="text-sm text-gray-500">20/11/2025</h2>
+    <h1 class="font-bold text-lg text-green-600">
+      {{transactions.amount | currency:'INR'}}
+    </h1>
+    <h2 class="text-sm text-gray-500">{{transactions.date| date:'short'}}</h2>
   </div>
 
   <!-- Action Buttons -->

@@ -8,7 +8,7 @@ import { Route, Routes } from '@angular/router';
 })
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  private baseURL = 'http://localhost:5000/api/auth';
+  private baseURL = 'https://localhost:5000/api/auth';
   constructor(private http: HttpClient) {}
   Login(user: any) {
     return this.http.post(`${this.baseURL}/Login`, user);
