@@ -13,6 +13,15 @@ import { Title } from '@angular/platform-browser';
 export class Incomes {
   constructor(private service: IncomeService) {}
   incomes!: any[];
+  newIncomeForm = false;
+
+  openForm() {
+    this.newIncomeForm = true;
+  }
+
+  closeForm() {
+    this.newIncomeForm = false;
+  }
   filters = {
     categoryName: '',
     startDate: '',
@@ -29,7 +38,6 @@ export class Incomes {
     console.log('hello');
   }
   loadIncome() {
-    console.log('func executed');
     this.service.Get(this.filters).subscribe((data: any) => {
       this.incomes = data;
       console.log('service is executed ');
@@ -42,5 +50,20 @@ export class Incomes {
   applyFilters() {
     this.loadIncome();
     console.log(this.filters);
+  }
+
+  AddNewIncome(IncomeForm: any) {
+    this.service.Post(IncomeForm).subscribe({
+      next: (res) => {
+        console.log(`Income added ${res.valueOf}`);
+        console.log(IncomeForm);
+      },
+      error(err) {
+        console.log(`${err}`);
+      },
+    });
+    alert('income added');
+    this.closeForm();
+    this.loadIncome();
   }
 }

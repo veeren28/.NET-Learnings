@@ -11,4 +11,7 @@ export class IncomeService {
     const params = new HttpParams({ fromObject: filters });
     return this.http.get(`${this.baseUrl}`, { params });
   }
+  Post(income: any) {
+    return this.http.post(`${this.baseUrl}`, income);
+  }
 }
