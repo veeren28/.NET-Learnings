@@ -43,6 +43,7 @@ export class Login {
 
   OnLogin(): void {
     this.loginForm.markAllAsTouched();
+    console.log(localStorage.getItem('token'));
 
     if (this.loginForm.invalid) {
       console.log('Form is Invalid');

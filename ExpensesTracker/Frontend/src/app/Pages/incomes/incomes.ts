@@ -3,6 +3,7 @@ import { TrasnsactionCard } from '../../Components/trasnaction-card/trasnsaction
 import { IncomeService } from '../../services/income-service';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { Title } from '@angular/platform-browser';
 @Component({
   selector: 'app-incomes',
   imports: [TrasnsactionCard, FormsModule, CommonModule],
@@ -11,22 +12,27 @@ import { CommonModule } from '@angular/common';
 })
 export class Incomes {
   constructor(private service: IncomeService) {}
-  incomes: any;
+  incomes!: any[];
   filters = {
     categoryName: '',
-    startdate: '',
+    startDate: '',
     endDate: '',
     minAmount: '',
     maxAmount: '',
-    search: '',
+    title: '', // used for search
   };
   ngOnInit() {
+    this.hello();
     this.loadIncome();
   }
+  hello() {
+    console.log('hello');
+  }
   loadIncome() {
+    console.log('func executed');
     this.service.Get(this.filters).subscribe((data: any) => {
       this.incomes = data;
-      console.log('checking ');
+      console.log('service is executed ');
       for (let i of this.incomes) {
         console.log(i.title);
       }

@@ -17,6 +17,7 @@ export class Dashboard {
     categoryName: '',
     startdate: '',
     endDate: '',
+    title: '', //used for search
     minAmount: '',
     maxAmount: '',
     search: '',

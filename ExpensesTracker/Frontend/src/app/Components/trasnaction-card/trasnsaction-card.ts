@@ -10,9 +10,7 @@ import { Component, Input } from '@angular/core';
 export class TrasnsactionCard {
   @Input() transactions!: TransactionInterface;
   ngOnInit() {
-    console.log(
-      `${this.transactions.amount}   date: ${this.transactions.date}`
-    );
+    console.log(`${this.transactions.title}   date: ${this.transactions.date}`);
   }
 }
 

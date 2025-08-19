@@ -4,13 +4,11 @@ import { Router } from '@angular/router';
 import { EMPTY } from 'rxjs';
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
-  console.log('Interceptor hit for URL:', req.url);
-
   const router = inject(Router);
   const token = localStorage.getItem('token');
 
   // URLs that don’t need authentication
-  const publicUrls = ['/api/auth/login', '/api/auth/register'];
+  const publicUrls = ['/api/auth/Login', '/api/auth/Register'];
 
   // Skip adding token if request is public
   if (publicUrls.some((url) => req.url.includes(url))) {
@@ -20,7 +18,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
   // If token is missing → block request
   if (!token) {
     window.alert('Unauthorized to access this feature');
-    router.navigate(['/Invalid']);
+    // router.navigate(['/Invalid']);
     return EMPTY; // Stop request
   }
 
@@ -30,7 +28,6 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
       Authorization: `Bearer ${token}`,
     },
   });
-  console.log('Intercepting:', req.url, 'Token:', token);
 
   return next(clone);
 };

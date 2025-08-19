@@ -18,10 +18,11 @@ export class SideBar {
   }
   constructor(private auth: AuthService, private route: Router) {}
   LogOut() {
-    this.auth.Logout();
+    // this.auth.Logout();
+    localStorage.removeItem('token');
     setTimeout(() => {
       alert('Logged Out Sucessfully');
-    }, 1500);
+    });
     this.route.navigate(['/Login']);
   }
 }

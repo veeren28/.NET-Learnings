@@ -8,7 +8,7 @@ import { Register } from './Auth/register/register';
 import { InvalidComponent } from './invalid-component/invalid-component';
 import { authGuard } from './auth-guard';
 import { ParentComponent } from './parent-component/parent-component';
-
+import { NgModel } from '@angular/forms';
 export const routes: Routes = [
   { path: '', redirectTo: 'Login', pathMatch: 'full' },
   { path: 'Login', component: Login },
@@ -25,6 +25,7 @@ export const routes: Routes = [
       { path: 'Dashboard', component: Dashboard },
       { path: 'Incomes', component: Incomes },
       { path: 'Expenses', component: Expenses },
+      // { path: 'Invalid', component: InvalidComponent },
     ],
     canActivate: [authGuard],
   },

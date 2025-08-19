@@ -36,7 +36,7 @@ export class Register {
   successMessage = ' ';
 
   constructor(private registeruser: AuthService, private router: Router) {}
-
+  InitialBalance!: number;
   ngOnInit() {
     this.RegisterForm = new FormGroup(
       {
@@ -102,12 +102,16 @@ export class Register {
   // }
 
   OnRegister(): void {
+    console.log(this.RegisterForm.value);
     this.successMessage = '';
     this.formErrors = [];
     if (this.RegisterForm.invalid) {
       console.log('Invalid Form');
       return;
     }
+
+    //
+
     this.registeruser.Register(this.RegisterForm.value).subscribe({
       next: (res: any) => {
         // i want to show the message of backend.
