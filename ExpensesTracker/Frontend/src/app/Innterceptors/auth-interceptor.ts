@@ -1,7 +1,9 @@
 import { HttpInterceptorFn } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { EMPTY } from 'rxjs';
+
+import { HttpErrorResponse } from '@angular/common/http';
+import { throwError } from 'rxjs';
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const router = inject(Router);
@@ -19,7 +21,9 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
   if (!token) {
     window.alert('Unauthorized to access this feature');
     // router.navigate(['/Invalid']);
-    return EMPTY; // Stop request
+    return throwError(
+      () => new HttpErrorResponse({ status: 401, statusText: 'No auth token' })
+    );
   }
 
   // If token exists → attach it to request

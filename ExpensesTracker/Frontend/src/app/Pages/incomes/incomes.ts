@@ -1,9 +1,14 @@
 import { Component } from '@angular/core';
-import { TrasnsactionCard } from '../../Components/trasnaction-card/trasnsaction-card';
+import {
+  TransactionInterface,
+  TrasnsactionCard,
+} from '../../Components/trasnaction-card/trasnsaction-card';
 import { IncomeService } from '../../services/income-service';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { Title } from '@angular/platform-browser';
+import { NavigationEnd, Router } from '@angular/router';
+import { filter } from 'rxjs/operators'; // ✅ import filter
+
 @Component({
   selector: 'app-incomes',
   imports: [TrasnsactionCard, FormsModule, CommonModule],
@@ -11,9 +16,25 @@ import { Title } from '@angular/platform-browser';
   styleUrl: './incomes.css',
 })
 export class Incomes {
-  constructor(private service: IncomeService) {}
   incomes!: any[];
   newIncomeForm = false;
+
+  filters = {
+    categoryName: '',
+    startDate: '',
+    endDate: '',
+    minAmount: '',
+    maxAmount: '',
+    title: '',
+  };
+
+  constructor(private service: IncomeService, private router: Router) {} // ✅ inject Router
+
+  ngOnInit() {
+    // run on first load
+    this.loadIncome();
+  }
+  income!: TransactionInterface[];
 
   openForm() {
     this.newIncomeForm = true;
@@ -22,31 +43,14 @@ export class Incomes {
   closeForm() {
     this.newIncomeForm = false;
   }
-  filters = {
-    categoryName: '',
-    startDate: '',
-    endDate: '',
-    minAmount: '',
-    maxAmount: '',
-    title: '', // used for search
-  };
-  ngOnInit() {
-    this.hello();
-    this.loadIncome();
-  }
-  hello() {
-    console.log('hello');
-  }
+
   loadIncome() {
     this.service.Get(this.filters).subscribe((data: any) => {
       this.incomes = data;
-      console.log('service is executed ');
-      for (let i of this.incomes) {
-        console.log(i.title);
-      }
-      console.log(data);
+      console.log('service is executed');
     });
   }
+
   applyFilters() {
     this.loadIncome();
     console.log(this.filters);
@@ -55,7 +59,7 @@ export class Incomes {
   AddNewIncome(IncomeForm: any) {
     this.service.Post(IncomeForm).subscribe({
       next: (res) => {
-        console.log(`Income added ${res.valueOf}`);
+        console.log(`Income added ${res}`);
         console.log(IncomeForm);
       },
       error(err) {

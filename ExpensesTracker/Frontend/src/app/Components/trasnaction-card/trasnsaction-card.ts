@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Expenses, ExpensesDTO } from '../../Pages/expenses/expenses';
 
 @Component({
   selector: 'app-trasnsaction-card',
@@ -9,12 +10,26 @@ import { Component, Input } from '@angular/core';
 })
 export class TrasnsactionCard {
   @Input() transactions!: TransactionInterface;
+
+  @Output() deleteEvent = new EventEmitter();
+  @Output() editEvent = new EventEmitter();
+
+  onDelete() {
+    this.deleteEvent.emit(this.transactions);
+    console.log(
+      `Emitted the ${this.transactions.expenseId} ${this.transactions.title}for delete from transaction card`
+    );
+  }
+  onEdit() {
+    this.editEvent.emit(this.transactions);
+  }
   ngOnInit() {
-    console.log(`${this.transactions.title}   date: ${this.transactions.date}`);
+    console.log(`${this.transactions.title} hello   `);
   }
 }
 
 export interface TransactionInterface {
+  expenseId: number;
   title?: string;
   description?: string;
   amount?: number;

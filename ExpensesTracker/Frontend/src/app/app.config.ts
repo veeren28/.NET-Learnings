@@ -18,7 +18,7 @@ import {
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
-    provideZonelessChangeDetection(),
+    // provideZonelessChangeDetection(),
     provideRouter(routes),
     provideHttpClient(withInterceptors([authInterceptor, testInterceptor])),
   ],

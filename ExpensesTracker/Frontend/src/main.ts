@@ -9,10 +9,10 @@ import { routes } from './app/app.routes';
 import 'zone.js';
 import { authGuard } from './app/auth-guard';
 
-bootstrapApplication(App, {
-  providers: [
-    provideHttpClient(),
-    importProvidersFrom(RouterModule.forRoot(routes)),
-  ],
-}).catch((err) => console.error(err));
+// bootstrapApplication(App, {
+//   providers: [
+//     provideHttpClient(),
+//     importProvidersFrom(RouterModule.forRoot(routes)),
+//   ],
+// }).catch((err) => console.error(err));
 bootstrapApplication(App, appConfig).catch((err) => console.error(err));
