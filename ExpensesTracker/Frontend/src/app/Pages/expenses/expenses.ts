@@ -70,7 +70,7 @@ export class Expenses {
     this.service.GetExpenses(this.filters).subscribe((data: ExpensesDTO[]) => {
       // Map backend DTO into reusable TransactionInterface
       this.expenses = data.map((exp) => ({
-        expenseId: exp.expenseId,
+        Id: exp.expenseId,
         title: exp.title,
         description: exp.description,
         amount: exp.amount,

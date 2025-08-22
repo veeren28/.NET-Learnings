@@ -17,7 +17,7 @@ export class TrasnsactionCard {
   onDelete() {
     this.deleteEvent.emit(this.transactions);
     console.log(
-      `Emitted the ${this.transactions.expenseId} ${this.transactions.title}for delete from transaction card`
+      `Emitted the ${this.transactions.Id} ${this.transactions.title}for delete from transaction card`
     );
   }
   onEdit() {
@@ -29,7 +29,7 @@ export class TrasnsactionCard {
 }
 
 export interface TransactionInterface {
-  expenseId: number;
+  Id?: number; // can be used for both income and expense;
   title?: string;
   description?: string;
   amount?: number;
