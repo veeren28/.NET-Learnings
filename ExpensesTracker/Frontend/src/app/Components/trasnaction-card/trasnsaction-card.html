@@ -1,46 +1,91 @@
 <div
-  class="w-full bg-gray-100 flex flex-col md:flex-row items-start md:items-center justify-between p-4 rounded-md shadow gap-4"
+  class="w-full flex flex-col md:flex-row items-start md:items-center justify-between gap-4 p-4 rounded-lg shadow-sm transition-all duration-200"
+  [ngClass]="
+    transactions.type === 'income'
+      ? 'bg-green-100 border-solid !border-l-[6px] !border-l-green-600'
+      : 'bg-red-50   border-solid !border-l-[6px] !border-l-red-500'
+  "
 >
   <!-- Icon -->
   <div class="flex-shrink-0">
-    @if(this.transactions.type=="expense"){
-    <img [src]="'assets/minus.svg'" alt="bye" class="w-10" />
-    } @else{
-    <img [src]="'assets/plus.svg'" alt="bye" class="w-10" />
+    @if (transactions.type === 'expense') {
+    <img src="assets/minus.svg" alt="expense" class="w-10 h-10" />
+    } @else {
+    <img src="assets/plus.svg" alt="income" class="w-10 h-10" />
     }
   </div>
 
   <!-- Title + Category -->
   <div class="flex flex-col">
-    <h1 class="font-semibold text-black text-base">{{transactions.title}}</h1>
-    <h2 class="font-medium text-gray-500 text-sm">
-      {{transactions.categoryName}}
+    <h1
+      class="font-semibold text-base leading-none"
+      [ngClass]="{
+          'text-green-800': transactions.type === 'income',
+          'text-red-800': transactions.type === 'expense'
+        }"
+    >
+      {{ transactions.title }}
+    </h1>
+    <h2
+      class="font-medium text-sm"
+      [ngClass]="{
+          'text-green-600': transactions.type === 'income',
+          'text-red-600': transactions.type === 'expense'
+        }"
+    >
+      {{ transactions.categoryName }}
     </h2>
   </div>
 
   <!-- Description -->
   <div class="flex-1">
-    <h2 class="text-gray-700 text-sm">{{transactions.description}}</h2>
+    <p
+      class="text-sm"
+      [ngClass]="{
+         'text-green-700': transactions.type === 'income',
+         'text-red-700': transactions.type === 'expense'
+       }"
+    >
+      {{ transactions.description }}
+    </p>
   </div>
 
   <!-- Amount + Date -->
   <div class="text-right">
-    <h1 class="font-bold text-lg text-green-600">
-      {{transactions.amount | currency:'INR'}}
-    </h1>
-    <h2 class="text-sm text-gray-500">{{transactions.date| date:'short'}}</h2>
+    <div
+      class="font-bold text-lg"
+      [ngClass]="{
+           'text-green-600': transactions.type === 'income',
+           'text-red-600': transactions.type === 'expense'
+         }"
+    >
+      {{ transactions.amount | currency:'INR':'symbol':'1.0-0' }}
+    </div>
+    <div
+      class="text-sm"
+      [ngClass]="{
+           'text-green-500': transactions.type === 'income',
+           'text-red-500': transactions.type === 'expense'
+         }"
+    >
+      {{ transactions.date | date:'M/d/yy, h:mm a' }}
+    </div>
   </div>
 
-  <!-- Action Buttons -->
+  <!-- Actions -->
   <div class="flex gap-2">
     <button
-      class="px-4 py-1 text-sm rounded-md border border-violet-400 text-violet-700 hover:bg-violet-100 transition"
+      class="px-4 py-1 text-sm rounded-md border transition-all duration-200"
+      [ngClass]="{
+        'border-green-400 text-green-700 hover:bg-green-100': transactions.type === 'income',
+        'border-red-400 text-red-700 hover:bg-red-100': transactions.type === 'expense'
+      }"
       (click)="onEdit()"
     >
       Edit
     </button>
     <button
-      class="px-4 py-1 text-sm rounded-md border border-red-400 text-red-600 hover:bg-red-100 transition"
+      class="px-4 py-1 text-sm rounded-md border border-gray-300 text-gray-600 hover:bg-gray-100 transition-all duration-200"
       (click)="onDelete()"
     >
       Remove

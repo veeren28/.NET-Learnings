@@ -82,9 +82,6 @@ export class Expenses {
       console.log(`laod Expense Count: ${this.LoadExpensesCount}`);
       this.category.GetCategories().subscribe((data: any) => {
         this.categoryName = data;
-        for (let i = 0; i < this.expenses.length; i++) {
-          console.log(this.expenses[i].title + ' ' + this.expenses[i].type);
-        }
       });
     });
 
@@ -105,7 +102,7 @@ export class Expenses {
   deleteExpenseConfirmed() {
     if (!this.expenseToDelete) return;
 
-    this.service.DeleteExpense(this.expenseToDelete.expenseId).subscribe({
+    this.service.DeleteExpense(this.expenseToDelete.Id).subscribe({
       next: (res) => {
         console.log(`Deleted item: ${this.expenseToDelete?.title}`);
         this.expenseToDelete = null; // Close modal

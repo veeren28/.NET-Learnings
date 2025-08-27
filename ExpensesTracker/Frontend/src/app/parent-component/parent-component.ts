@@ -4,6 +4,7 @@ import { Router, RouterModule, RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-parent-component',
+  standalone: true,
   imports: [SideBar, RouterOutlet, RouterModule],
   templateUrl: './parent-component.html',
   styleUrl: './parent-component.css',
