@@ -1,9 +1,13 @@
 import { Component } from '@angular/core';
-import { TrasnsactionCard } from '../../Components/trasnaction-card/trasnsaction-card';
+import {
+  TransactionInterface,
+  TrasnsactionCard,
+} from '../../Components/trasnaction-card/trasnsaction-card';
 import { SideBar } from '../../Components/side-bar/side-bar';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TransactionService } from '../../services/transaction-service';
+import { Title } from '@angular/platform-browser';
 @Component({
   selector: 'app-dashboard',
   imports: [TrasnsactionCard, SideBar, CommonModule, FormsModule],
@@ -12,7 +16,6 @@ import { TransactionService } from '../../services/transaction-service';
 })
 export class Dashboard {
   constructor(private serv: TransactionService) {}
-  transactions!: any;
   filters = {
     categoryName: '',
     startdate: '',
@@ -26,13 +29,20 @@ export class Dashboard {
     this.loadTransactions();
     this.GetSummary();
   }
+  transactions!: TransactionInterface[];
   loadTransactions() {
-    this.serv.Get(this.filters).subscribe((data: any) => {
-      this.transactions = data;
-      console.log('transactions');
-      // for (let i of this.transactions) {
-      //   console.log(i.title, i.categoryName, i.type);
-      // }
+    this.serv.Get(this.filters).subscribe((data: TransactionDTO[]) => {
+      // Map backend DTO into reusable TransactionInterface
+      this.transactions = data.map((tran) => ({
+        Id: tran.id,
+        title: tran.title,
+        description: tran.description,
+        amount: tran.amount,
+        balance: tran.balance,
+        categoryName: tran.categoryName,
+        date: tran.date,
+        type: tran.type,
+      }));
     });
   }
   totalIncome!: number;
@@ -45,9 +55,7 @@ export class Dashboard {
       this.totalIncome = data.totalIncome;
       this.totalExpense = data.totalExpense;
       this.Balance = data.balance;
-      console.log(
-        `Balance: ${this.Balance}  Expense: ${this.totalExpense} Income: ${this.totalIncome}  /n ${data.balance}`
-      );
+
       // this.summary.totalExpense = data.TotalExpense;
       // this.summary.totalIncome = data.TotalIncome;
       // this.summary.Balance = data.balance;
@@ -75,4 +83,15 @@ export interface SummaryDetails {
   totalIncome: number;
   totalExpense: number;
   Balance: number;
+}
+
+export interface TransactionDTO {
+  id: number;
+  amount: number;
+  type: string;
+  title: string;
+  description?: string;
+  date?: Date;
+  balance?: number;
+  categoryName: string;
 }

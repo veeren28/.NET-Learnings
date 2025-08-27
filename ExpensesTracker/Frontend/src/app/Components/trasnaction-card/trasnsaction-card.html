@@ -3,7 +3,11 @@
 >
   <!-- Icon -->
   <div class="flex-shrink-0">
-    <img src="assets/Images/minusSymbol.svg" alt="bye" class="w-8 h-8" />
+    @if(this.transactions.type=="expense"){
+    <img [src]="'assets/minus.svg'" alt="bye" class="w-10" />
+    } @else{
+    <img [src]="'assets/plus.svg'" alt="bye" class="w-10" />
+    }
   </div>
 
   <!-- Title + Category -->

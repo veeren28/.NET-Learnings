@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { routes } from '../app.routes';
 import { Route, Routes } from '@angular/router';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -13,7 +14,7 @@ export class AuthService {
   Login(user: any) {
     return this.http.post(`${this.baseURL}/Login`, user);
   }
-  Register(user: any) {
+  Register(user: any): Observable<any> {
     return this.http.post(`${this.baseURL}/Register`, user);
   }
   Logout(): void {

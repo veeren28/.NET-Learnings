@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Expenses, ExpensesDTO } from '../../Pages/expenses/expenses';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-trasnsaction-card',
@@ -24,7 +25,8 @@ export class TrasnsactionCard {
     this.editEvent.emit(this.transactions);
   }
   ngOnInit() {
-    console.log(`${this.transactions.title} hello   `);
+    console.log(this.transactions.type);
+    console.log('from Transacrtion card');
   }
 }
 

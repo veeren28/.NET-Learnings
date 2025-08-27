@@ -77,12 +77,18 @@ export class Expenses {
         date: exp.date,
         balance: exp.balance,
         categoryName: exp.categoryName,
+        type: exp.type,
       }));
       console.log(`laod Expense Count: ${this.LoadExpensesCount}`);
       this.category.GetCategories().subscribe((data: any) => {
         this.categoryName = data;
+        for (let i = 0; i < this.expenses.length; i++) {
+          console.log(this.expenses[i].title + ' ' + this.expenses[i].type);
+        }
       });
     });
+
+    // console.log('hello ' + typeof this.expenses);
   }
 
   applyFilters() {
@@ -156,6 +162,7 @@ export interface ExpensesDTO {
   balance: number;
   categoryName?: string;
   categoryId?: number;
+  type: string;
 }
 export interface UpdateExpenseDTO {
   id: number;

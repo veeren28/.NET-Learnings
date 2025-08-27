@@ -34,6 +34,8 @@ export class Register {
   RegisterForm!: FormGroup;
   formErrors: string[] = [];
   successMessage = ' ';
+  errorMessage = null;
+  errorList = [];
 
   constructor(private registeruser: AuthService, private router: Router) {}
   InitialBalance!: number;
@@ -125,8 +127,18 @@ export class Register {
         this.RegisterForm.reset();
       },
       error: (err) => {
-        console.log('Error Object:', JSON.stringify(err, null, 2));
-        // window.alert(err.errors.error);
+        const body = err?.error ?? {};
+
+        this.errorMessage = body?.message ?? 'Something went wrong';
+        this.errorList = Array.isArray(body?.errors) ? body.errors : [];
+
+        if (this.errorList.length > 0) {
+          for (const e of this.errorList) {
+            alert(e);
+          }
+        } else {
+          alert(this.errorMessage);
+        }
       },
     });
   }

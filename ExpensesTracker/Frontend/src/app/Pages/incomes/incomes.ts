@@ -46,8 +46,8 @@ export class Incomes {
         amount: inc.amount,
         description: inc.description,
         balace: inc.balance,
+        type: inc.type,
       }));
-      console.log('service is executed');
     });
   }
 
@@ -124,7 +124,7 @@ export interface IncomeDTO {
   incomeId: number;
   amount: number;
   description: string;
-
+  type: string;
   title: string;
   balance: number;
 }
