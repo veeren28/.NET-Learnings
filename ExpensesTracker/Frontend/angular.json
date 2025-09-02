@@ -20,6 +20,12 @@
           },
           "configurations": {
             "production": {
+              "fileReplacements": [
+                {
+                  "replace": "src/envinorment/envinorment.ts",
+                  "with": "src/envinorment/envinorment.prod.ts"
+                }
+              ],
               "budgets": [
                 {
                   "type": "initial",
